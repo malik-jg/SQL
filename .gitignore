@@ -1,0 +1,18 @@
+# Environment and Python-related files
+.env
+.venv/
+__pycache__/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*.so
+
+# Dependency files
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+
+# Other files
+*.log
