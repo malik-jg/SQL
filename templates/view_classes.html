@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Classes</title>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/instructor_dashboard">Manage Students <i class="fa fa-th-large"></i></a>
+            <a class="logout" href="/view_classes">View Classes <i class="fa fa-calendar" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            {% if assigned_classes %}
+            <h2 class="applicantdata"> List of All Assigned Classes  </h2>
+            <table>
+                <tr>
+                    <th>Department</th>
+                    <th>Course Number</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                    <th>Room Capacity</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                    <th>CRN</th>
+                </tr>
+                {% for class in assigned_classes %}
+                <tr>
+                    <td>
+                        <p>{{class['course_dept']}}</p>
+                    </td>
+                    <td>
+                        <p>{{class['course_num']}}</p>
+                    </td>
+                    <td>
+                        <p>{{class['schedule_day']}}</p>
+                    </td>
+                    <td>
+                        <p>{{class['start_time']}}-{{class['end_time']}}</p>
+                    </td>
+                    <td>
+                        <p>
+                            {% if class['room'] %}
+                                {{class['room']}}
+                            {% else %}
+                                Unknown
+                            {% endif %}
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            {% if class['room_capacity'] %}
+                                {{class['room_capacity']}}
+                            {% else %}
+                                Unknown
+                            {% endif %}
+                        </p>
+                    </td>
+                    <td>
+                        <p>{{class['semester']}}</p>
+                    </td>
+                    <td>
+                        <p>{{class['year']}}</p>
+                    </td>
+                    <td>
+                        <p>{{class['crn']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% else %}
+                No Current Assigned Classes
+            {% endif %}
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

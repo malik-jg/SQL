@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/transcript.css') }}">
+<head>
+    <title>Transcripts</title>
+</head>
+<body>
+    <h1>Transcripts</h1>
+
+    <form action="/dashboard">
+        <input type="submit" value="Return to Dashboard" />
+    </form>
+
+    <br>
+
+    <form action="/applicant" method="GET">
+        <input type="text" id="search_student" name="search_student" placeholder="Search..." value="{{ request.args.get('search_student', '') }}">
+        <input type="submit" value="search"><br> 
+    </form>
+    
+        <table border="1">
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Program</th>
+		<th>Major</th>
+            </tr>
+            {% for student in students %}
+                <tr>
+                    <td><a href="/transcript/{{student[0]}}">{{ student[0] }}</a></td>
+                    <td>{{ student[1] }} {{ student[2] }}</td>
+                    <td>{{ student[3] }}</td>
+                    <td>{{ student[4] }}</td>
+		    <td>{{ student[5] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

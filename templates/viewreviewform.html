@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_form.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="head">Graduate Admissions Review Form</h1>
+
+        <h2>Student Data</h2>
+
+        <div class="datafield">
+            <p>Name: <id class="formdata">{{appinfo['lastname']}}, {{appinfo['firstname']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Student Number: <id class="formdata">{{appinfo['uid']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Semester and Year of Application: <id class="formdata">{{appinfo['semester']}} {{appinfo['year']}} </id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Applying For Degree: <id class="formdata">{{appinfo['degreessought']}}</id>
+            </p>
+        </div>
+
+        <!-- maybe do a check for these? -->
+        <h2>Summary of Creditials</h2>
+        <div class="datafield">
+            <p>GRE: &nbsp &nbsp Verbal: <id class="formdata">{{appinfo['greverbal']}}</id> &nbsp &nbsp Quantitative: <id
+                    class="formdata">
+                    {{appinfo['grequantitative']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Year of Exam: <id class="formdata">{{appinfo['greyearofexam']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>GRE Advanced: &nbsp &nbsp Score:<id class="formdata">{{appinfo['greadvancedscore']}}</id> &nbsp
+                &nbspSubject: <id class="formdata">{{appinfo['greadvancedsubject']}}</id>
+            </p>
+        </div>
+
+
+
+        <!-- <h2>Prior Degrees</h2> -->
+        <div class="pdtable">
+            <table>
+                <tr>
+                    <th>Degree Type</th>
+                    <th>GPA</th>
+                    <th>Year</th>
+                    <th>University</th>
+                </tr>
+                {% for degree in degree_info %}
+                <tr>
+                    <td>
+                        <p>{{degree['degree_type']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['gpa']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['year']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['school']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="datafield">
+            <p> Areas of Interest:
+                <id class="formdata">{{appinfo['areas_interest']}}</id>
+            </p>
+
+            <p> Expierence:
+                <id class="formdata">{{appinfo['priorwork']}}</id>
+            </p>
+        </div>
+        <form action="{{ url_for('viewreviewform', applicationid = appinfo['applicationid'])}}" method="POST">
+
+            <h2>Recommendation Letters Rating: (Worst=1, Best =5)</h2>
+            <div class="datafield">
+                <ol>
+                    <li>
+                        <label for="rating">Rating:</label>
+                        <select name="rating" disabled="true">
+                            {% if review_info['rating'] == '1' %}
+                            <option value="1">1</option>
+                            {% endif %}
+
+                            {% if review_info['rating'] == '2' %}
+                            <option value="2">2</option>
+                            {% endif %}
+
+                            {% if review_info['rating'] == '3' %}
+                            <option value="3">3</option>
+                            {% endif %}
+
+                            {% if review_info['rating'] == '4' %}
+                            <option value="4">4</option>
+                            {% endif %}
+
+                            {% if review_info['rating'] == '5' %}
+                            <option value="5">5</option>
+                            {% endif %}
+
+                        </select>
+                        &nbsp
+                        <label for="generic">Generic: </label>
+                        <select name="generic" disabled="true">
+                            {% if review_info['generic'] == 'generic_n' %}
+                            <option value="generic_n">N</option>
+                            {% endif %}
+
+                            {% if review_info['generic'] == 'generic_y' %}
+                            <option value="generic_y">Y</option>
+                            {% endif %}
+
+                        </select>
+                        &nbsp
+                        <label for="Credible">Credible: </label>
+                        <select name="Credible" disabled="true">
+                            {% if review_info['credible'] == 'credible_n' %}
+                            <option value="credible_n">N</option>
+                            {% endif %}
+
+                            {% if review_info['credible'] == 'credible_y' %}
+                            <option value="credible_y">Y</option>
+                            {% endif %}
+
+                        </select>
+                        &nbsp
+                        From: &nbsp {{review_info['rec_name']}}
+                    </li>
+                </ol>
+            </div>
+
+            <h2>Grad Admissions Comittee (GAS) Review Rating:</h2>
+            <div class="datafield">
+                <ol readonly>
+
+                    {% if review_info['gas_decision'] == 'rev_reject' %}
+                    <input type="radio" name="gas_decision" value="rev_reject" checked>
+                    <label for="Reject"> Reject</label><br>
+                    {% else %}
+                    <input type="radio" name="gas_decision" value="rev_reject" disabled>
+                    <label for="Reject"> Reject</label><br>
+                    {% endif %}
+
+                    {% if review_info['gas_decision'] == 'rev_borderline_admit'%}
+                    <input type="radio" name="gas_decision" value="rev_borderline_admit" checked>
+                    <label for="Reject">Borderline Admit </label><br>
+                    {% else %}
+                    <input type="radio" name="gas_decision" value="rev_borderline_admit" disabled>
+                    <label for="Reject">Borderline Admit </label><br>
+                    {% endif %}
+
+                    {% if review_info['gas_decision'] == 'rev_admit_without_aid'%}
+                    <input type="radio" name="gas_decision" value="rev_admit_without_aid" checked>
+                    <label for="Reject"> Admit without Aid</label><br>
+                    {% else %}
+                    <input type="radio" name="gas_decision" value="rev_admit_without_aid" disabled>
+                    <label for="Reject"> Admit without Aid</label><br>
+                    {% endif %}
+
+                    {% if review_info['gas_decision'] == 'rev_admit_with_aid'%}
+                    <input type="radio" name="gas_decision" value="rev_admit_with_aid" checked>
+                    <label for="Reject"> Admit with Aid</label><br>
+                    {% else %}
+                    <input type="radio" name="gas_decision" value="rev_admit_with_aid" disabled>
+                    <label for="Reject"> Admit with Aid</label><br>
+                    {% endif %}
+
+                </ol>
+                <p>Deficiency Courses if Any:<id class="formdatacomment">{{review_info['missing_course']}}
+                    </id>
+                </p>
+                <p>Reasons for Reject:<id class="formdata">{{review_info['reasons_reject']}}</id>
+                </p>
+                <p>(A =Incomplete Record, B= Does not meet minimum Requirements,
+                    C= Problems with Letters, D= Not competitive, E= Other reasons)</p>
+                <p>GAS Reviewer Comments:<id class="formdata">{{review_info['reviewer_comment']}}</id>
+                </p>
+            </div>
+            <div class="datafield">
+                <p>Recommended Advisor:<id class="formdata">{{review_info['recommended_advisor']}}</id>
+                </p>
+            </div>
+
+            {% if session['role'] == 'cac' or session['role'] == 'grad_sec' %}
+            <div class="datafield">
+                <p>Final Decision:
+                    <input type="radio" name="final_decision" value="admit with aid">
+                    <label for="Reject"> Admit with Aid &nbsp </label>
+                    <input type="radio" name="final_decision" value="admit">
+                    <label for="Reject">Admit &nbsp</label>
+                    <input type="radio" name="final_decision" value="reject">
+                    <label for="Reject">Reject </label>
+                </p>
+            </div>
+            <button class="submit" type="submit" name="Submit" value="Submit">Submit Final Decision</button>
+            {% endif %}
+            <a href="/roleportal">Return</a>
+        </form>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

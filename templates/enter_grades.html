@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Grades - Instructor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <h2>Enter Grades for CRN: {{ crn }}</h2>
+        <form action="" method="POST">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student[0] }}</td>
+                        <td>{{ student[1] }} {{ student[2] }}</td>
+                        <td>
+                            <!-- <input type="hidden" name="student_uid" value="{{ student[0] }}"> -->
+                            <!--<input type="text" name="grade" required {% if student[3] %} disabled value="{{ student[3] }}" {% endif %}>-->
+                            <input type="hidden" name="student_uid" value="{{ student[0] }}">
+                            <select id="grade" name="grade" {% if student[3] != "IP" %} disabled {% endif %} required>
+                                <option value="A" {% if student[3] == "A" %} selected {% endif %}>A</option>
+            
+                                <option value="A-" {% if student[3] == "A-" %} selected {% endif %}>A-</option>
+            
+                                <option value="B+" {% if student[3] == "B+" %} selected {% endif %}>B+</option>
+            
+                                <option value="B" {% if student[3] == "B" %} selected {% endif %}>B</option>
+            
+                                <option value="B-" {% if student[3] == "B-" %} selected {% endif %}>B-</option>
+            
+                                <option value="C+" {% if student[3] == "C+" %} selected {% endif %}>C+</option>
+            
+                                <option value="C" {% if student[3] == "C" %} selected {% endif %}>C+</option>
+                        
+                                <option value="F" {% if student[3] == "F" %} selected {% endif %}>F</option>
+            
+                                <option value="IP" {% if student[3] == "IP" %} selected {% endif %}>IP</option>
+                            </select>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No students to display.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Submit Grades</button>
+        </form>
+        <a href="{{ url_for('instructor_dashboard') }}">Back to Dashboard</a>
+    </main>
+</body>
+</html>

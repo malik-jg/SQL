@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Advisor</title>
+    <style>
+        .long-input {
+            width: 500px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/adminhome">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/adduser">Add User <i class="fa fa-plus"></i></a>
+            <a class="logout" href="/adminreview">Access Reviews <i class="fa fa-envelope"></i></a>
+            <a class="logout" href="/admin_assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> All Students </h2>
+            <form action="/admin_assign_advisor" method="GET">
+                <p><input type="text" placeholder="Search Student By UID or Last Name" name="search" class="long-input"> <button type="submit"><i class="fa fa-search"></i></button></p>
+            </form>
+            <br>
+            {% if students %}
+            <table>
+                <tr>
+                    <th>University ID</th>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Advisor ID</th>
+                    <th>Reassign Advisor</th>
+                    <th>Update</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <td>
+                        <p>{{student['uid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['last_name']}}, {{student['first_name']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['advisor_id']}}</p>
+                    </td>
+                    <form action="{{url_for('admin_assign_advisor')}}" method="POST">
+                        <td>
+                            <input type="hidden" name="user_id" value="{{student['user_id']}}">
+                            <select class="options" name="new_advisor" style="text-transform: capitalize;"
+                                required>
+                                {% for advisor in advisors %}
+                                    <option value="{{advisor['user_id']}}">{{advisor['first_name']}} {{advisor['last_name']}} - {{advisor['user_id']}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit">Reassign</button>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No Students</p>
+            {% endif %}
+
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% if message %}
+        <script>
+            function empty_form(message){
+                alert(message)
+            }
+            empty_form("{{message}}")
+        </script>   
+    {% endif %}
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

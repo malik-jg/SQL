@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styleapp.css">
+</head>
+
+
+<head>
+    <title>Application</title>
+    <style>
+    .hide{
+        display: none;
+    }
+
+    .show{
+        display: block;
+    }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <img class="img1" src="static\images\GW.png"> </img>
+
+        <div class="accountinfo">
+            <p> {{session['username']}}</p>
+            <a href="/logout"> Logout</a>
+            <a href="/roleportal"> Home</a>
+        </div>
+        <h1 class="applicationhead">Application</h1>
+
+
+        <div class="view">
+            <div class="application_container">
+                <div class="personalacademicdiv">
+                    <form class="appform" action="{{ url_for('application') }}" method="POST" enctype="multipart/form-data">
+                        <div class="flash-messages">
+                            {% with messages = get_flashed_messages(with_categories=True) %}
+                            {% if messages %}
+                            <ul class="flashes">
+                                {% for category, message in messages %}
+                                <p class="flash {{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class=" personalinfodiv">
+                            <br>
+                            <details open>
+
+                                <summary>
+                                    Personal Info
+                                </summary>
+
+                                <p>First name: </p>
+                                <div class="textfield">
+                                    <input type="text" name="firstname" placeholder="First Name"
+                                        value="{{ user_data['firstname'] }}">
+                                </div>
+                                <p>Last name: </p>
+                                <div class="textfield">
+                                    <input type="text" name="lastname" placeholder="Last Name"
+                                        value="{{user_data['lastname'] }}">
+                                </div>
+
+
+                                <p>Address:
+
+
+                                <div class="textfield">
+                                    <input type="text" name="address" placeholder="Address"
+                                        value="{{ user_data['address'] }}">
+                                </div>
+
+
+                                </p>
+                                <p>SSN:
+
+
+                                <div class="textfield">
+                                    <input type="text" name="ssn" placeholder="123-45-6789"
+                                        value="{{ user_data['ssn'] }}">
+                                </div>
+
+
+                                </p>
+
+
+                                <p>Phone Number:
+
+
+                                <div class="textfield">
+                                    <input type="text" name="phone" placeholder="111-222-3333"
+                                        value="{{ user_data['phonenumber'] }}">
+                                </div>
+                                </p>
+                            </details>
+                        </div>
+                        <div class="academicinfodiv1">
+                            <details open>
+                                <summary>Degree Sought </summary>
+                                <br>
+
+                                {% if user_data['degreessought'] == 'None' %}
+                                <input type="radio" name="SoughtOptions" value="MS">
+                                <label for="MS"> Masters Program</label><br>
+                                <input type="radio" name="SoughtOptions" value="PHD">
+                                <label for="PHD"> Doctoral Program</label><br>
+
+
+                                {% elif user_data['degreessought'] == 'MS' %}
+                                <input type="radio" name="SoughtOptions" value="MS" checked>
+                                <label for="MS"> Masters Program</label><br>
+                                <input type="radio" name="SoughtOptions" value="PHD">
+                                <label for="PHD"> Doctoral Program</label><br>
+
+
+                                {% elif user_data['degreessought'] == 'PHD' %}
+                                <input type="radio" name="SoughtOptions" value="MS">
+                                <label for="MS"> Masters Program </label><br>
+                                <input type="radio" name="SoughtOptions" value="PHD" checked>
+                                <label for="PHD"> Doctoral Program</label><br>
+
+
+                                {% else %}
+                                <input type="radio" name="SoughtOptions" value="MS">
+                                <label for="MS"> Masters Program</label><br>
+                                <input type="radio" name="SoughtOptions" value="PHD">
+                                <label for="PHD"> Doctoral Program</label><br>
+
+
+                                {% endif %}
+                                <br>
+                                <label for="areas_interest"> Areas of Interest: </label><br>
+                                <div class="textfield">
+                                    <input type="text" name="areas_interest" value="{{ user_data['areas_interest'] }}"
+                                        placeholder="List Interests"><br><br>
+                                </div>
+                            </details>
+                        </div>
+                        <details open>
+                            <summary> Semester and Year</summary>
+                            <div>
+
+
+
+                                <h3> Semester </h3>
+                                {% if user_data['semester'] == 'Fall' %}
+                                <input type="radio" name="Semester" value="Fall" checked>
+                                <label for="Fall"> Fall Semester</label><br>
+                                {% else %}
+                                <input type="radio" name="Semester" value="Fall">
+                                <label for="Fall"> Fall Semester</label><br>
+                                {% endif %}
+
+
+                                {% if user_data['semester'] == 'Spring' %}
+                                <input type="radio" name="Semester" value="Spring" checked>
+                                <label for="Spring"> Spring Semester</label><br>
+                                {% else %}
+                                <input type="radio" name="Semester" value="Spring">
+                                <label for="Spring"> Spring Semester</label><br>
+                                {% endif %}
+                            </div>
+
+
+                            <div>
+                                <h3> Year </h3>
+
+
+                                {% if user_data['year'] == '2025' %}
+                                <input type="radio" name="Year" value="2025" checked>
+                                <label for="2025">2025 </label><br>
+                                {% else %}
+                                <input type="radio" name="Year" value="2025">
+                                <label for="2025">2025 </label><br>
+                                {% endif %}
+                            </div>
+                        </details>
+                        <br>
+
+                        <details open>
+                            <summary>Prior Degrees </summary>
+                            <br>
+
+                            <div class="academicinfodiv2">
+
+                                {% if user_data['priordegrees'] == 'BS' or user_data['priordegrees'] =='MS' %}
+                                <input type="checkbox" name="BS" value="BS" checked>
+                                <label for="BS"> Bachelor Program</label><br>
+                                {% else %}
+                                <input type="checkbox" name="BS" value="BS">
+                                <label for="BS"> Bachelor Program</label><br>
+                                {% endif %}
+
+                                <label for="yearreceived_bs"> Year Received:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="yearreceived_bs" value="{{ priordegreeinfoBS['year'] }}"
+                                        placeholder="YYYY"><br><br>
+                                </div>
+
+                                <label for="major_ms"> Major:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="major_bs" value="{{ priordegreeinfoBS['major'] }}"
+                                        placeholder="Major"><br><br>
+                                </div>
+
+
+                                <label for="gpa"> GPA:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="gpa_bs" value="{{ priordegreeinfoBS['gpa'] }}"
+                                        placeholder="X.XX"><br><br>
+                                </div>
+
+
+                                <label for="university"> University/College:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="university_bs" value="{{ priordegreeinfoBS['school'] }}"
+                                        placeholder="Institution Name..."><br><br>
+                                </div>
+
+                            </div>
+                            <div class="academicinfodiv4">
+                                {% if user_data['priordegrees'] == 'MS' %}
+
+
+                                <input type="checkbox" name="MS" value="MS" checked>
+                                <label for="MS"> Masters Program</label><br>
+                                {% else %}
+                                <input type="checkbox" name="MS" value="MS">
+                                <label for="MS"> Masters Program</label><br>
+                                {% endif %}
+
+
+                                <label for="yearreceived_ms"> Year Received:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="yearreceived_ms" value="{{ priordegreeinfoMS['year'] }}"
+                                        placeholder="YYYY"><br><br>
+                                </div>
+
+
+                                <label for="major_ms"> Major:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="major_ms" value="{{ priordegreeinfoMS['major'] }}"
+                                        placeholder="Major"><br><br>
+                                </div>
+
+
+                                <label for="gpa"> GPA:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="gpa_ms" value="{{ priordegreeinfoMS['gpa'] }}"
+                                        placeholder="X.XX"><br><br>
+                                </div>
+                                <label for="university"> University/College:</label><br>
+                                <div class="textfield">
+                                    <input type="text" name="university_ms" value="{{ priordegreeinfoMS['school'] }}"
+                                        placeholder="Institution Name..."><br><br>
+                                </div>
+                            </div>
+                        </details>
+                        <br>
+                        <div class="academicinfodiv3">
+                            <details open>
+                                <summary> Credentials </summary>
+                                <h3>GRE Scores(Required only for PhD Applicants): </h3>
+
+
+                                <div class="textfield">
+                                    <input type="text" name="greverbal" placeholder="Verbal Score (1-170)"
+                                        value="{{ user_data['greverbal'] }}">
+                                </div>
+
+
+
+
+                                <div class="textfield">
+                                    <input type="text" name="grequantitative" placeholder="Quantitative Score (1-170)"
+                                        value="{{ user_data['grequantitative'] }}">
+                                </div>
+
+
+                                <div class="textfield">
+                                    <input type="text" name="greyearofexam" placeholder="Year of Exam"
+                                        value="{{ user_data['greyearofexam'] }}">
+                                </div>
+
+
+                                <h3>GRE Advanced(PhD Requirement): </h3>
+
+
+                                <div class="textfield">
+                                    <input type="text" name="greadvancedscore" placeholder="Score (1-120)"
+                                        value="{{ user_data['greadvancedscore'] }}">
+                                </div>
+
+
+                                <div class="textfield">
+                                    <input type="text" name="greadvancedsubject" placeholder="Subject"
+                                        value="{{ user_data['greadvancedsubject'] }}">
+                                </div>
+
+
+
+
+                                <p>Prior Work-Experience (Maximum of 2 Sentences):
+
+
+                                <div class="textfieldpw">
+                                    <textarea type="text" name="priorwork"
+                                        placeholder="Describe your prior work-experience..." value=""
+                                        maxlength="255">{{ user_data['priorwork'] }}</textarea>
+                                </div>
+                            </details>
+                            <br>
+                            <details open>
+                                <summary>Transcript</summary>
+                                <input type="radio" name="transcript" value="mail" onclick="hidePDF()">
+                                <label for="mail"> Mail</label><br>
+                                <input type="radio" name="transcript" value="email" onclick="hidePDF()">
+                                <label for="email"> Email</label><br>
+                                <input type="radio" name="transcript" value="online" onclick="showPDF()">
+                                <label for="online"> Online</label><br>
+                                
+                                <br>
+                                <div id="pdf" class="hide">
+                                    <input name="usertranscript" type="file" accept="application/pdf" />
+                                </div>
+
+                            </details>
+                            <br>
+                            <details open>
+                                <summary>Recommendation Letter</summary>
+
+                                <p>Name: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_name_one" placeholder="Recommender Name"
+                                        value="{{ user_data['rec_name_one'] }}" maxlength="50">
+                                </div>
+                                <p>Email: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_email_one" placeholder="Recommender Email"
+                                        value="{{ user_data['rec_email_one'] }}" maxlength="50">
+                                </div>
+                                <p>Name: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_name_two" placeholder="Recommender Name"
+                                        value="{{ user_data['rec_name_two'] }}" maxlength="50">
+                                </div>
+                                <p>Email: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_email_two" placeholder="Recommender Email"
+                                        value="{{ user_data['rec_email_two'] }}" maxlength="50">
+                                </div>
+                                <p>Name: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_name_three" placeholder="Recommender Name"
+                                        value="{{ user_data['rec_name_three'] }}" maxlength="50">
+                                </div>
+                                <p>Email: </p>
+                                <div class="textfield">
+                                    <input type="text" name="rec_email_three" placeholder="Recommender Email"
+                                        value="{{ user_data['rec_email_three'] }}" maxlength="50">
+                                </div>
+                            </details>
+                            <br>
+                            <div class="submitsave">
+                                <button type="submit" name="Submit" value="Submit">Submit Application</button>
+
+                                {% if session['status'] == 'application complete and under review' %}
+                                {% else %}
+                                <button type="submit" name="Save" value="Save" onClick="refreshPage()">Save
+                                    Application</button>
+                                {% endif %}
+                            </div>
+
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+        <img class="img2" src="static/images/GW.png"> </img>
+    </div>
+
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+<script>
+function showPDF(){
+    var pdf = document.getElementById("pdf");
+    pdf.classList.remove('hide');
+    pdf.classList.add('show');
+}
+function hidePDF(){
+    var pdf = document.getElementById("pdf");
+    pdf.classList.remove('show');
+    pdf.classList.add('hide');
+}
+</script>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/styleapp.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>Recommendation Letters</h1>
+
+        <form action="{{ url_for('recommendation') }}" method="POST">
+            <div class="inner_container">
+                {% if rec_info['rec_name_one'] %}
+                    <p>Recommender's Name: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_name_one" value="{{rec_info['rec_name_one']}}" readonly>
+                    </div>
+                    <p>Recommender's Email: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_email_one" value="{{rec_info['rec_email_one']}}" readonly>
+                    </div>
+                    <p>Recommender's Letter Status: </p>
+                    <div class="textfield">
+                        {%if rec_info['rec_letter_one'] %}
+                            <input type="text" name="rec_letter_one" value="Recieved" readonly>
+                        {% else %}
+                            <input type="text" name="rec_letter_one" value="Not Recieved" readonly>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if rec_info['rec_name_two'] %}
+                    <p>Recommender's Name: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_name_two" value="{{rec_info['rec_name_two']}}" readonly>
+                    </div>
+                    <p>Recommender's Email: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_email_two" value="{{rec_info['rec_email_two']}}" readonly>
+                    </div>
+                    <p>Recommender's Letter Status: </p>
+                    <div class="textfield">
+                        {%if rec_info['rec_letter_two'] %}
+                            <input type="text" name="rec_letter_two" value="Recieved" readonly>
+                        {% else %}
+                            <input type="text" name="rec_letter_two" value="Not Recieved" readonly>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if rec_info['rec_name_three'] %}
+                    <p>Recommender's Name: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_name_three" value="{{rec_info['rec_name_three']}}" readonly>
+                    </div>
+                    <p>Recommender's Email: </p>
+                    <div class="textfield">
+                        <input type="text" name="rec_email_three" value="{{rec_info['rec_email_three']}}" readonly>
+                    </div>
+                    <p>Recommender's Letter Status: </p>
+                    <div class="textfield">
+                        {%if rec_info['rec_letter_three'] %}
+                            <input type="text" name="rec_letter_three" value="Recieved" readonly>
+                        {% else %}
+                            <input type="text" name="rec_letter_three" value="Not Recieved" readonly>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div class="submitsave">
+                    <button type="submit" name="Return" value="Return">Return</button>
+                </div>
+            </div>
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                    <p class="flash {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </form>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_home.css">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="/static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/adduser">Add User <i class="fa fa-plus"></i></a>
+            <a class="logout" href="/adminreview">Access Reviews <i class="fa fa-envelope"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+
+        <div class="inner_container">
+            <table>
+                <tr>
+                    <th>UserID</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Edit</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p>{{user['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p class="email">{{user['email']}}</p>
+                    </td>
+                    <td>
+                        <p>{{user['role']}}</p>
+                    </td>
+                    <td>
+                        <form action="/edituser/{{user['user_id']}}" method="post">
+
+                            <select name="roles" class="roles">
+                                <option value="{{user['user_id']}}" hidden>
+                                    {{user['role']}}</option>
+                                <option value="user">User</option>
+                                <option value="applicant">Applicant</option>
+                                <option value="reviewer">Reviewer</option>
+                                <option value="gs">GS</option>
+                                <option value="chair">Chair</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <button>Apply</button>
+
+                        </form>
+                    </td>
+
+                </tr>
+            </table>
+            <br>
+            <a class="return" href="/adminhome">Return</a>
+        </div>
+    </div>
+</body>
+
+</html>

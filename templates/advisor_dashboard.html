@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Advisor</title>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/advisor_dashboard">List of Advisees <i class="fa fa-th-large"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/view_applicants">View Applicants <i class="fa fa-address-book"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            {% if advisees %}
+            <h2 class="applicantdata"> List of All Advisees </h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>University ID</th>
+                    <th>Program</th>
+                    <th>Major</th>
+                    <th>GPA</th>
+                    <th>Cleared to Graduate </th>
+                </tr>
+                {% for advisee in advisees %}
+                <tr>
+                    <td>
+                        <p>{{advisee['first_name']}} {{advisee['last_name']}}</p>
+                    </td>
+                    <td>
+                        <p>{{advisee['uid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{advisee['program']}}</p>
+                    </td>
+                    <td>
+                        <p>{{advisee['major']}}</p>
+                    </td>
+                    <td>
+                        <p>{{advisee['gpa']}}</p>
+                    </td>
+                    <td>
+                        <p>
+                            {% if advisee['cleared'] == 0 %}
+                                Not Cleared To Graduate
+                            {% else %}
+                                Cleared To Graduate
+                            {% endif %}
+                        </p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <h2 class="applicantdata"> Choose An Advisee to See More </h2>
+            <form id="advisee-form" action="/advisor_dashboard" method="POST">
+                <div class="advisee-form-container">
+                    <div class="advisee-form-box">
+                        <select id="advisee-dropdown" name="selected_advisee_uid">
+                            <option value="">Select Advisee</option>
+                            {% for advisee in advisees %}
+                                <option value="{{advisee['uid']}}">{{advisee['first_name']}} {{advisee['last_name']}} - {{advisee['uid']}}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">View</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <br>
+                {% if advisee_information %}
+                    <h2 class="applicantdata"> Viewing {{advisee_information['first_name']}} {{advisee_information['last_name']}}</h2>
+                    <br>
+                <br>
+                    {% if courses_taken %}
+                        <h2 class="applicantdata"> Current Schedule </h2>
+                        <br>
+                        <br>
+                        <table>
+                            <tr>
+                                <th>Department</th>
+                                <th>Course Number</th>
+                                <th>Title</th>
+                                <th>Credits</th>
+                                <th>Semester</th>
+                                <th>Year </th>
+                                <th>Grade </th>
+                                <th>CRN </th>
+                            </tr>
+                            {% for course in courses_taken%}
+                                {% if course %}
+                                    {% if course['grade'] == 'IP' %}
+                            <tr>
+                                <td>
+                                    <p>{{course['dept']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['course_num']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['course_title']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['credits']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['semester_taken']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['year']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['grade']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['crn']}}</p>
+                                </td>
+                            </tr>
+                            {%else%}
+                            Student Is Not Registered For Classes!
+                    {% endif %}
+                            {%else%}
+                            Student Is Not Registered For Classes!
+                    {% endif %}
+                            {% endfor %}
+                        </table>
+                        <br>
+                    {% else %}
+                        Student Is Not Registered For Classes!
+                    {% endif %}
+                    {%if form_one %}
+                    <br>
+                    <br>
+                    <h2 class="applicantdata"> Most Recent Form 1 </h2>
+                        <table>
+                            <tr>
+                                <th>Department</th>
+                                <th>Course Number</th>
+                            </tr>
+                            <form action = "{{ url_for('advisor_dashboard', advisee_uid = advisee_uid)}}" method = 'POST'>
+                            {% for course in forms_classes %}
+                            <tr>
+                                <td>
+                                    <p>{{course['dept']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['course_num']}}</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        <br>
+                        {% if advisee_information['program'] == 'PhD' %}
+                            <p>
+                            {% if thesis %}
+                                <h2 class="applicantdata"> Thesis </h2>
+                                <br>
+                                <textarea type="text" id="thesis" rows="15" cols="75" readonly> {{thesis['thesis']}} </textarea>
+                            {% else %}
+                                Not Submitted
+                            {% endif %}</p>
+                        {% endif %}
+                        {% if form_one['approved'] %}
+                            <center>You Have Approved This Form 1</center>
+                        {% else %}
+                            <div class="big-button-container">
+                                <center><input type="submit" class="big-button" name="approve" value="Approve"></center>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                    <br>
+                    <br>
+                    <br>
+                        <center>Student Has Not Submitted A Form 1!</center>
+                    {% endif %}
+                <br>
+                <br>
+                {% if courses_taken %}
+                        <h2 class="applicantdata"> Transcript Schedule </h2>
+                        <br>
+                        <br>
+                        <table>
+                            <tr>
+                                <th>Department</th>
+                                <th>Course Number</th>
+                                <th>Title</th>
+                                <th>Credits</th>
+                                <th>Semester</th>
+                                <th>Year </th>
+                                <th>Grade </th>
+                                <th>CRN </th>
+                            </tr>
+                            {% for course in courses_taken %}
+                            {% if course %}
+                            <tr>
+                                <td>
+                                    <p>{{course['dept']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['course_num']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['course_title']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['credits']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['semester_taken']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['year']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['grade']}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course['crn']}}</p>
+                                </td>
+                            </tr>
+                            {%else%}
+                            Student Is Not Registered For Classes!
+                    {% endif %}
+                            {% endfor %}
+                        </table>
+                        <br>
+                {% else %}
+                    Student Has Not Completed Any Classes!
+                {% endif %}
+            {% endif %}
+        {% else %}
+            You Have Not Been Assigned Any Advisees.
+        {% endif %}
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

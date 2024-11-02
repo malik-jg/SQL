@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" type="text/css" href="/static/style_status.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/style_student_info.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Info</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <!-- app_info is a tuple of data for each application entry -->
+        <h1 class="appname">{{app_info['lastname']}}, {{app_info['firstname']}}</h1>
+
+        <div class="inner_container">
+            <form action="/gsc_studentinfo?user_id={{app_info['user_id']}}&reviewerid={{reviewerid}}" method="POST">
+
+                {% if app_info['transcript_submission'] == 'mail' %}
+                    <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                        value="transcript">Transcript</button>
+                    <br>
+                {% elif app_info['transcript_submission'] == 'email' and app_info['transcript_submission_received'] == 'received' %}
+                    <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                        value="transcript">Transcript</button>
+                    <br>
+                {% elif app_info['transcript_submission'] == 'online' and app_info['transcript_submission_received'] == 'received' %}
+                <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                    value="transcript">Transcript</button>
+                <br>
+                {% else %}
+                <button class="button disabled" type="submit" name="Submit" value="transcript"
+                    disabled>Transcript</button>
+                <br>
+                {% endif %}
+            
+                {% if rec_status['rec_email_one'] and not rec_status['rec_email_two'] and not rec_status['rec_email_three'] %}
+                    {% if rec_status['status_one'] == 'received'%}
+                        <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                            value="rec">Recommendation Letter</button>
+                        <br>
+                    {% elif rec_status['status_one'] == 'not received' %}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% else %}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% endif %}
+                {% elif rec_status['rec_email_one'] and rec_status['rec_email_two'] and not rec_status['rec_email_three'] %}
+                    {% if rec_status['status_one'] == 'received' and rec_status['status_two'] == 'received' %}
+                        <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                            value="rec">Recommendation Letter</button>
+                        <br>
+                    {% elif rec_status['status_one'] == 'not received' and  rec_status['status_two'] == 'not_recieved' %}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% else %}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% endif %}        
+                {% elif rec_status['rec_email_one'] and rec_status['rec_email_two'] and rec_status['rec_email_three'] %}
+                    {% if rec_status['status_one'] == 'received' and rec_status['status_two'] == 'received' and rec_status['status_three'] == 'received' %}
+                        <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                            value="rec">Recommendation Letter</button>
+                        <br>
+                    {% elif rec_status['status_one'] == 'not received' and rec_status['status_two'] == 'not_recieved' and rec_status['status_three'] == 'not_recieved'%}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% else %}
+                        <button class="button disabled" type="submit" name="Submit" value="rec" disabled>Recommendation
+                            Letter</button>
+                        <br>
+                    {% endif %}   
+                {% endif %}
+                <button class="button button_moving button_moving_color" type="submit" name="Submit" value="view">View
+                    Application</button>
+                <br>
+                {%if rev_status == 'reviewed'%}
+                <button class="button button_moving button_moving_color" type="submit" name="Submit" value="form">Review
+                    Form</button>
+                <br>
+                {% else %}
+                <button class="button disabled" type="submit" name="Submit" value="form" disabled>Review Form</button>
+                <br>
+                {% endif %}
+                <button class="button button_moving button_moving_color" type="submit" name="Submit" value="refresh">Refresh</button>
+                <br>
+            </form>
+        </div>
+        <form action="/gsc_studentinfo?user_id={{app_info['user_id']}}" method="POST">
+
+            <button class="button button_moving button_moving_color" type="submit" name="Submit" value="return">Return
+            </button>
+        </form>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

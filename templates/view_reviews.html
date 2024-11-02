@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_home.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Reviews</title>
+</head>
+
+<body>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <div>
+                    <a class="GWhome" href="/roleportal">
+                        <img class="gwlogo" src="static/images/GW.png">
+                    </a>
+                </div>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/cachome">Reviews <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/view_reviews">View All Reviews <i class="fa fa-sticky-note-o" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="inner_container ">
+            <br>
+            <form action="/view_reviews" method="GET">
+                <p><input type="text" placeholder="Search Applicant By ID" name="search" class="long-input"> <button type="submit"><i class="fa fa-search"></i></button></p>
+            </form>
+            <br>
+            {% if all_reviews %}
+            <table>
+                <tr>
+                    <th>Review ID</th>
+                    <th>Applicant ID</th>
+                    <th>Reviewer ID</th>
+                    <th>Rating</th>
+                    <th>Decision</th>
+                    <th>Reasons Reject</th>
+                    <th>Reviewer Comment</th>
+                    <th>Recommended Advisor</th>
+                    <th>Time Stamp</th>
+                </tr>
+                {% for review in all_reviews %}
+                <tr>
+                    <td>
+                        <p>{{review['reviewid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['reviewerid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['rating']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['gas_decision']}}</p>
+                    </td>
+                    <td>
+                        <p>
+                            {% if review['reasons_reject'] %}
+                                {{review['reasons_reject']}}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </p>
+                    </td>
+                    <td>
+                        <p>{{review['reviewer_comment']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['recommended_advisor']}}</p>
+                    </td>
+                    <td>
+                        <p>{{review['timestamp']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% elif not all_reviews and query %}
+            <p> Could Not Find Such Applicant</p>
+            {%else%}
+                No Reviews
+            {% endif %}
+
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

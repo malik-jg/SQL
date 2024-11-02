@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Classes - College Registration System</title>
+    <link rel="stylesheet" type="text/css" href="/static/classes.css">
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="{{ url_for('roleportal') }}">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">Classes</h1>
+                    <li>
+                        <form action="/logout">
+                            <input type="submit" value="Logout" />
+                        </form>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="dashboard-container">
+            <h2>Classes</h2>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="{{ url_for('view_classes') }}">View My Classes</a></li>
+                </ul>
+            </div>
+            <a href="{{ url_for('instructor_dashboard') }}">Back to Dashboard</a>
+            {% if displayed_semesters %}
+            <section class="semester-section">
+                <h3>Select Semester</h3>
+                <form action="/classes" method="post">
+                    <select name="semester" onchange="this.form.submit()">
+                        {% if displayed_semesters %}
+                        {% for semester in displayed_semesters %}
+                        <option value="{{ semester[1] }}{{ semester[0] }}" {% if semester[1] ~ semester[0] == selected_semester %} selected {% endif %}>{{ semester[0] }} {{ semester[1] }}</option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="" disabled>No semesters available</option>
+                        {% endif %}
+                    </select>
+                </form>
+            </section>
+            {% endif %}
+
+            <section class="class-section">
+                <h3>Classes</h3>
+
+                <form action="/classes" method="get" class="search-form">
+                    <input type="hidden" name="semester" value="{{ selected_semester }}">
+                    <input type="text" id="search_class" name="search_class" placeholder="Search class...">
+                    <input type="submit" value="search"><br>
+                </form>
+                <ul>
+                    {% for course in displayed_courses %}
+                    <li class="course-item">
+                        <strong>{{ course[1] }} {{ course[2] }}: {{ course[3] }}</strong>
+                        <br>
+                        CRN: {{ course[0] }}<br>
+                        Day: {{ course[4] }}, {{ course[5] }} - {{ course[6] }}<br>
+                        {% if course[7] %}
+                        Instructor: {{ course[7] }}<br>
+                        {% endif %}
+                        <a href="{{ url_for('enter_grades', crn=course[0]) }}">View/Enter Grades</a>
+                    </li>
+                    <br>
+                    {% else %}
+                    <li>There is no class available</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(82, 86, 89);
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-style: solid;
+}
+
+.formdata {
+    text-decoration: underline;
+}
+
+.formdatacomment {
+    text-decoration: underline;
+    word-wrap: break-word;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2mm 16mm 27mm 16mm;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    text-align: center;
+
+}
+
+th {
+    text-decoration: underline;
+}
+
+p {
+    word-break: break-all;
+    white-space: normal;
+}
+
+td {
+    border-style: solid;
+    /* border-color: red; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.submit {
+    display: flex;
+    margin-left: auto;
+}
+
+a {
+    float: right;
+}
+
+button {
+    font-family: "Times New Roman", Times, serif;
+}

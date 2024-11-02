@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_signup.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner_container">
+            <header class="header">
+                <h1> Welcome, Revolutionary!</h1>
+            </header>
+            <form action="/signup" method="POST">
+                <div class="textfield">
+                    <div class="inputcontainer">
+                        <input type="text" name="first_name" placeholder="First Name" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="last_name" placeholder="Last Name" class="form-input">
+                    </div>
+                    <br>
+                    <label for="dob" style="color: white;">Date of Birth:</label>
+                    <div class="inputcontainer">
+                        <input type="date" name="dob" placeholder="mm/dd/yy" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="email" placeholder="Email" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="username" placeholder="Username" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="password" name="password" placeholder="Password" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="street_address" placeholder="Street Address" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="city" placeholder="City" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="state" placeholder="State" class="form-input">
+                    </div>
+                    <br>
+                    <div class="inputcontainer">
+                        <input type="text" name="postal_code" placeholder="Postal Code" class="form-input">
+                    </div>
+                    <br>
+                </div>
+
+                <div>
+                    <input class="button" type="submit" name="Signup" value="Signup">
+                </div>
+                <br>
+
+                <p>Already have an account? <a href="/logout">Login </a></p>
+            </form>
+        </div>
+        <!-- Flash Message -->
+        <div class="temp">
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                    <p class="flash {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <!-- Flash Message -->
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>

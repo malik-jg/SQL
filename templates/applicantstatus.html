@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_status.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Linefont:wght@4..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+
+
+    <title>Application Status</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+
+        <p class="AppStatus">
+            </h1>
+
+        <div class="inner_container">
+            {% if decision == 'undecided' %}
+
+            {% if status == 'application incomplete' %}
+            <lord-icon src="https://cdn.lordicon.com/ghhwiltn.json" trigger="in" delay="100"
+                style="width:100px;height:100px">
+            </lord-icon>
+            <p class="box invisible one">{{status}}</p>
+            <br>
+            {% endif %}
+
+            {% if status == 'application complete and under review' %}
+            <div class="wrapper"> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                </svg>
+            </div>
+
+
+            <p class="box invisible two">{{status}}</p>
+            <br>
+            {% endif %}
+
+            {% else %}
+
+            {% if decision == 'admit' or decision == 'admit with aid' %}
+            <lord-icon src="https://cdn.lordicon.com/gqjpawbc.json" trigger="in" delay="100" stroke="bold"
+                state="in-reveal" style="width:100px;height:100px">
+            </lord-icon>
+            <p class="box invisible two">You are Admitted! Welcome to GW!</p>
+            <br>
+
+            <form action="{{ url_for('logout', admitted = 'True') }}" method="POST">
+                <button class="button" type="submit" name="admit" value="admit"> Accept?
+                </button>
+            </form>    
+
+            {% endif %}
+
+            {% if decision == 'reject' %}
+            <div class="rejected">
+                <p class="">
+                    Dear {{session['username']}},
+                    <br>
+                    <br>
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Thank you for your interest in George Washington University
+                    (GWU) and for submitting
+                    your
+                    application for admission. We have carefully reviewed your application materials, and I regret to
+                    inform you that we are unable to offer you admission for the upcoming academic term.
+                    <br>
+                    <br>
+
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Please understand that our decision was based on a highly
+                    competitive selection process,
+                    and while
+                    your credentials are impressive, we are unable to accommodate all qualified applicants due to
+                    limitations in our available spots.
+                    <br>
+                    <br>
+
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;We encourage you to pursue other academic opportunities that
+                    align with your interests
+                    and goals.
+                    There are many excellent institutions where your talents and abilities would be valued, and we wish
+                    you the best of luck in your future endeavors.
+                    <br>
+                    <br>
+
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Thank you once again for considering GWU for your higher
+                    education journey. If you have
+                    any
+                    questions or need further guidance, please feel free to reach out to the admissions office.
+                </p>
+                <br>
+            </div>
+            {% endif %}
+
+            {% endif %}
+
+
+        </div>
+
+        <form action="{{ url_for('status') }}" method="POST">
+            <button class="button" type="submit" name="Home" value="Home">&#x2190; Return
+            </button>
+        </form>
+    </div>
+</body>
+
+</html>

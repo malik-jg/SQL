@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni</title>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/alumni_dashboard">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> Academic Information </h2>
+            <div class="container">
+                <p><b>Name: </b>{{user_info['first_name']}} {{user_info['last_name']}}</p>
+                <p><b>University ID: </b>{{alumni_info[0]['university_id']}}</p>
+                <p><b>Program: </b>{{alumni_info[0]['program']}}</p>
+                <p><b>Major: </b>{{alumni_info[0]['major']}}</p>
+                <p><b>GPA: </b>{{alumni_info[0]['gpa']}}</p>
+                <p><b>Year of Graduation: </b>{{alumni_info[0]['year_of_graduation']}}</p>
+            </div>
+            <br>
+            <h2 class="applicantdata"> Courses</h2>
+            <br>
+            {% if courses_taken %}
+            <table>
+                <tr>
+                    <th>Course</th>
+                    <th>Title</th>
+                    <th>Credits</th>
+                    <th>Date</th>
+                    <th>CRN</th>
+                    <th>Grade</th>
+                </tr>
+                {% for course in courses_taken %}
+                <tr>
+                    <td>
+                        <p>{{course['dept']}} {{course['course_num']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['course_title']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['credits']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['semester_taken']}} {{course['year']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['crn']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['grade']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+            <br>
+            <br>
+            {% if form_one %}
+                <h2 class="applicantdata"> Form 1 </h2>
+                <br>
+                <table>
+                    <tr>
+                        <th>Department</th>
+                        <th>Course Number</th>
+                        <th>Credits</th>
+                    </tr>
+                    {% for course in forms_classes   %}
+                    <tr>
+                        <td>
+                            <p>{{course['dept']}}</p>
+                        </td>
+                        <td>
+                            <p>{{course['course_num']}}</p>
+                        </td>
+                        <td>
+                            <p>{{course['credits']}}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <br>
+            {% if alumni_info[0]['program'] == 'PhD' %}
+                {% if thesis %}
+                    <h2 class="applicantdata"> Thesis </h2>
+                    <br>
+                    <textarea type="text" id="thesis" rows="15" cols="75" readonly> {{thesis['thesis']}} </textarea>
+                {% endif %}</p>
+            {% endif %}
+            <br>
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+    {% if message %}
+        <script>
+            function message(message){
+                alert(message)
+            }
+            message("{{message}}")
+        </script>   
+    {% endif %}
+</body>
+
+</html>

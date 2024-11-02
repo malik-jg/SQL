@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Instructor</title>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/instructor_dashboard">Manage Students <i class="fa fa-th-large"></i></a>
+            <a class="logout" href="/view_classes">View Classes <i class="fa fa-calendar" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            {% if assigned_classes %}
+            <h2 class="applicantdata"> Select A Class To View More Info  </h2>
+            <form id="course-form" action="{{url_for('instructor_dashboard')}}" method="POST">
+                <div class="course-form-container">
+                    <div class="course-form-box">
+                        <select id="course-dropdown" name="selected_course_crn">
+                            <option value="">Select Class</option>
+                            {% for course in assigned_classes %}
+                                <option value="{{course['crn']}}">{{course['course_dept']}} {{course['course_num']}} - {{course['crn']}}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">View</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <form action="/instructor_dashboard" method="GET">
+                <p><input type="text" placeholder="Search Student By UID" name="search" class="long-input"> <button type="submit"><i class="fa fa-search"></i></button></p>
+            </form>
+            {% else %}
+                No Current Assigned Classes
+            {% endif %}
+            {% if students %}
+            <h2 class="applicantdata"> List of Students In {{course['course_dept']}} {{course['course_num']}} - {{course['crn']}}</h2>
+            <table>
+                <tr>
+                    <th>University ID</th>
+                    <th>Name</th>
+                    <th>Current Grade</th>
+                    <th>Assign Grade</th>
+                    <th>Update Grade</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <td>
+                        <p>{{student['university_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['first_name']}} {{student['last_name']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['grade']}}</p>
+                    </td>
+                    <form id="update-grade-form" action="{{url_for('instructor_dashboard')}}" method="POST">
+                    <td>
+                        {% if student['grade'] == 'IP' %}
+                            <select name="new_grade">
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="F">F</option>
+                            </select>
+                        {% else %}
+                            Grade Is Finalized
+                         {% endif %}
+                    </td>
+                    <td>
+                        <p>{% if student['grade'] == 'IP' %}
+                                <center><input type="submit" class="big-button" name="update_grade_button" value="Update Grade"></center>
+                                <input type="hidden" name="student_uid" value="{{student['university_id']}}" />
+                                <input type="hidden" name="course_crn" value="{{course['crn']}}" />
+                            {% else %}
+                                Grade Is Finalized
+                            {% endif %}
+                        </p>
+                    </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% elif not students and course %}
+                No Students Registered For {{course['course_dept']}} {{course['course_num']}} - {{course['crn']}} 
+            {% endif %}
+            {% if specific_student %}
+            <h2 class="applicantdata"> Student with UID: {{search_query}}</h2>
+            <table>
+                <tr>
+                    <th>Department</th>
+                    <th>Course Number</th>
+                    <th>CRN</th>
+                </tr>
+                {% for course in specific_student %}
+                <tr>
+                    <td>
+                        <p>{{course['course_dept']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['course_num']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['crn']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% endif %}
+            {% if all_students %}
+            <h2 class="applicantdata"> All Students Across All Classes</h2>
+            <table>
+                <tr>
+                    <th>University ID</th>
+                    <th>CRN</th>
+                </tr>
+                {% for student in all_students %}
+                <tr>
+                    <td>
+                        <p>{{student['university_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{student['crn']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% endif %}
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

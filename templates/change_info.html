@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Personal Information - College Registration System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <h2>Change Personal Information</h2>
+
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+
+        <form action="/update_info/{{user_info.uid}}" method="post">
+            <div class="form-group">
+                <label for="f_name">First Name:</label>
+                <br>
+                <input type="text" id="f_name" name="f_name" required value= "{{user_info.f_name}}" >
+            </div>
+            <div class="form-group">
+                <label for="l_name">Last Name:</label>
+                <br>
+                <input type="text" id="l_name" name="l_name" required value= "{{user_info.l_name}}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <br>
+                <input type="email" id="email" name="email" required value= "{{user_info.email}}">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <br>
+                <input type="text" id="password" name="password" required value= "{{user_info.password}}">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <br>
+                <input type="text" id="address" name="address" value= "{{user_info.address}}">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <br>
+		<input type="date" id="dob" name="dob" required value= {{user_info.dob}}>
+            </div>
+            <br>
+            <button type="submit">Submit Changes</button>
+        </form>
+        <br>
+
+        <button onclick="history.back()">Go Back</button>
+        <br>
+
+        <form action="/dashboard">
+            <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </form>
+    </main>
+</body>
+</html>

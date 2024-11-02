@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_home.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grad Secretary Dashboard</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Grad Secretary Dashboard</h1>
+        <a class="logout" href="/logout"> Logout</a>
+
+        {% if review_info %}
+
+
+        <h2>View Applicant Data</h2>
+        <table>
+            <tr>
+                <th>Applicant ID</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>View</th>
+                <th>Update Status</th>
+            </tr>
+            {% for app in review_info %}
+            <tr>
+                <td>
+                    <p>{{app['applicantid']}}</p>
+                </td>
+                <td>
+                    <p>{{app['email']}}</p>
+                </td>
+                <td>
+                    <p>{{app['status']}}</p>
+                </td>
+                <td>
+                    <a href="/studentinfo/{{user_id['user_id']}}"> View </a>
+                </td>
+                <td>
+                    <form action="/update_application_status" method="POST">
+                        <input type="hidden" name="application_id" value="{{app['applicationid']}}">
+                        <select name="new_status" required>
+                            <option value="Pending Review">Pending Review</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% else %}
+
+        <p>No Applicant Data</p>
+
+        {% endif %}
+    </div>
+</body>
+
+</html>

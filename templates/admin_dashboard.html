@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - College Registration System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <h2>Welcome, Admin</h2>
+        <form action="/logout" method="post">
+            <input type="submit" value="Logout" />
+        </form>
+        <section>
+            <h3>User Management</h3>
+            <ul>
+                <li><a href="/view_info">Manage Users</a></li>
+                <li><a href="/add_user">Add New User</a></li>
+                <li><a href="/classes">View Classes</a></li>
+            </ul>
+        </section>
+
+
+    </main>
+</body>
+</html>

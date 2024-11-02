@@ -1,0 +1,111 @@
+body { 
+    background-image: url('images/Elliott2.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #080710; 
+    height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', sans-serif; 
+    color: #ffffff; 
+}
+
+main {
+    padding: 20px;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+form {
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.65); 
+    position: relative; 
+    margin: 20px auto; 
+    border-radius: 10px;
+    padding: 50px 35px;
+}
+
+form * {
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+}
+
+label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input, select {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #e5e5e5; 
+}
+
+::placeholder {
+    color: #e5e5e5;
+}
+
+button, input[type="submit"] {
+    margin-top: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+section {
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+select {
+    cursor: pointer;
+}
+
+.error-message {
+    background-color: #ffcccc; /* Light red background */
+    color: #cc0000; /* Dark red text color */
+    padding: 10px 20px; /* Padding around the error message */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 20px; /* Spacing below the error message */
+    text-align: center; /* Center the error message */
+    font-size: 16px; /* Font size of the error message */
+}

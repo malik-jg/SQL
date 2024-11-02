@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/styleapp.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add A New User</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add A New User</h1>
+        <form action="{{ url_for('adduser') }}" method="POST">
+            <div class="inner_container">
+                <p>Email: </p>
+                <div class="textfield">
+                    <input type="text" name="email" >
+                </div>
+                <p>Username: </p>
+                <div class="textfield">
+                    <input type="text" name="username" >
+                </div>
+                <p>Password: </p>
+                <div class="textfield">
+                    <input type="password" name="password" >
+                </div>
+                <p>First Name: </p>
+                <div class="textfield">
+                    <input type="text" name="fname" >
+                </div>
+                <p>Last Name: </p>
+                <div class="textfield">
+                    <input type="text" name="lname" >
+                </div>
+                <p>Address: </p>
+                <div class="textfield">
+                    <input type="text" name="address" >
+                </div>
+                <p>Date of Birth: </p>
+                <div class="textfield">
+                    <input type="date" name="dob" >
+                </div>
+                <p>Role: </p>
+                <div class="textfield">
+                    <select name="roles" id="roles" >
+                        <option value="admin">Admin</option>
+                        <option value="grad_sec">Graduate Secretary</option>
+                        <option value="cac">CAC</option>
+                        <option value="reviewer">Reviewer</option>
+                        <option value="fac_adv">Advisor</option>
+                        <option value="instructor">Instructor</option>
+                        <option value="grad_stu">Graduate Student</option>
+                        <option value="applicant">Applicant</option>
+                        <option value="alumni">Alumni</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+                <p>Reminder: <br>
+                    When creating an applicant user, make sure their application is already in the database.
+                </p>
+                <br>
+                <div class="submitsave">
+                    <button type="submit" name="Submit" value="Submit">Submit</button>
+                    <a href="{{ url_for('adminhome') }}">Return</a>
+                </div>
+            </div>
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                    <p class="flash {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

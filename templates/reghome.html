@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graduate Secretary and Chair</title>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/reghome">Schedule of Classes <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> Course Schedule Actions</h2>
+            <p>Remove Courses</p>
+            <form action="{{url_for('reghome')}}" name = "remove_course" method="POST">
+                    <input type="text" name="remove_course" placeholder="CRN">
+                    <br>
+                    <button type="submit">Remove Course</button>
+            </form>
+            <br>
+            <p>Add Courses</p>
+            <br>
+            <form action="{{url_for('reghome')}}" name = "add_course" method="POST">
+                <input type="hidden" name="add_course" value="add_course">
+                <select name="course">
+                    {% for course in courses %}
+                        <option value="{{course['department']}}_{{course['course_num']}}">{{course['department']}} {{course['course_num']}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select name="day" >
+                        <option value="M">Monday</option>
+                        <option value="T">Tuesday</option>
+                        <option value="W">Wednesday</option>
+                        <option value="R">Thursday</option>
+                        <option value="F">Friday</option>
+                </select>
+                <br>
+                <select name="time" >
+                    <option value="15:00_17:30">15:30 - 17:30</option>
+                    <option value="18:00_20:30">18:00 - 20:30</option>
+                </select>
+                <br>
+                <select name="instructor" >
+                    {% for instructor in instructors %}
+                        <option value="{{instructor['user_id']}}">{{instructor['first_name']}} {{instructor['last_name']}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select name="semester" >
+                    <option value="fall">Fall</option>
+                    <option value="spring">Spring</option>
+                    <option value="summer">Summer</option>
+                </select>
+                <br>
+                <select name="year" >
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+                <br>
+                <button type="submit">Add Course</button>
+            </form>
+
+
+
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

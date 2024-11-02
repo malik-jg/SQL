@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications</title>
+    <style>
+        .long-input {
+            width: 500px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/gschome">Final Review <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/applications">Applications <i class="fa fa-clipboard"></i></a>
+            <a class="logout" href="/assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> Pending Applications </h2>
+            <form action="/applications" name = "search" method="GET">
+                <p><input type="text" placeholder="Search Applicant By UID or Last Name" name="search" class="long-input"> <button type="submit"><i class="fa fa-search"></i></button></p>
+            </form>
+            <br>
+            <h2 class="applicantdata"> Filter </h2>
+            <center>
+            <form action="/applications" name = "filter_form" method="POST">
+                <select name="filter" id="filter" >
+                    <option value="semester">Semester</option>
+                    <option value="year">Year</option>
+                    <option value="program">Program</option>
+                </select>
+                <br>
+                <div name = "dynamic_select" id="dynamic-select"></div>
+                <br>
+                <input type="submit" name="filter_input" value="Filter">
+            </form>
+            </center>
+            <br>
+            {% if all_application %}
+            <table>
+                <tr>
+                    <th>University ID</th>
+                    <th>Applicant ID</th>
+                    <th>Name</th>
+                    <th>Documents</th>
+                    <th>Transcript Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for app in all_application %}
+                <tr>
+                    <td>
+                        <p>{{app['uid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{app['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{app['lastname']}}, {{app['firstname']}}</p>
+                    </td>
+                    <td>
+                        <a class="logout" href="/gsc_studentinfo?user_id={{app['user_id']}}"> View </a>
+                    </td>
+                    <td>
+                        <p>{{app['transcriptstatus']}}</p>
+                    </td>
+                    <form action="{{url_for('applications')}}" name = "transcript_form" method="POST">
+                        <td>
+                            <input type="hidden" name="user_id" value="{{app['user_id']}}">
+                            <input type="hidden" name="confirm" value="confirm">
+                            {% if app['transcriptstatus'] == 'received' %}
+                                <input type="submit" name="new_transcript_status_{{app['user_id']}}" value="Update to Not Received">
+                            {% else %}
+                                <input type="submit" name="new_transcript_status_{{app['user_id']}}" value="Update to Received">
+                            {% endif %}
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No Applications</p>
+            {% endif %}
+            <br>
+            <h2 class="applicantdata"> Stats For Applications </h2>
+            <br>
+            <p><b>Total Applications: </b>{{stats['total_apps']}}</p>
+            <p><b>Admitted Without Aid: </b>{{stats['admitted_without_aid']}}</p>
+            <p><b>Admitted With Aid: </b>{{stats['admitted_with_aid']}}</p>
+            <p><b>Rejected: </b>{{stats['rejected']}}</p>
+            <p><b>Undecided: </b>{{stats['undecided']}}</p>
+            <p><b>Total MS Applications: </b>{{stats['ms']}}</p>
+            <p><b>Total PhD Applications: </b>{{stats['phd']}}</p>
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% if message %}
+        <script>
+            function empty_form(message){
+                alert(message)
+            }
+            empty_form("{{message}}")
+        </script>   
+    {% endif %}
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+<script>
+    document.getElementById("filter").addEventListener("change", function() {
+        var selectedValue = this.value;
+        var dynamicSelect = document.getElementById("dynamic-select");
+        dynamicSelect.innerHTML = ""; // Clear previous options
+    
+        if (selectedValue === "semester") {
+            dynamicSelect.innerHTML = `
+                <select name="semester" id="semester">
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Fall">Fall</option>
+                </select>
+            `;
+        } else if (selectedValue === "year") {
+            dynamicSelect.innerHTML = `
+                <select name="year" id="year">
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+            `;
+        } else if (selectedValue === "program") {
+            dynamicSelect.innerHTML = `
+                <select name="program" id="program">
+                    <option value="MS">MS</option>
+                    <option value="PhD">PhD</option>
+                </select>
+            `;
+        }
+    });
+    </script>
+</html>

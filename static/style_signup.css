@@ -1,0 +1,194 @@
+* {
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("../static/images/gw_opengraph.jpeg");
+    background-size: cover;
+
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    z-index: 10;
+    border-style: solid;
+
+}
+
+a {
+    color: hsla(61, 98%, 47%, 0.897);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+p {
+    color: white;
+}
+
+h1 {
+    color: white;
+    text-decoration: underline;
+}
+
+
+.inner_container {
+    display: flex;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: hsla(0, 0%, 10%, 0.1);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    width: 20%;
+    height: 50%;
+
+}
+
+.temp {
+    /* border-style: solid;
+    width: 100px; */
+    width: 235px;
+    height: 115px;
+}
+
+.flash-messages {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.temp {
+    /* border-style: solid;
+    width: 100px; */
+    width: 235px;
+    height: 115px;
+}
+
+.flash-messages ul.flashes .flash {
+    animation: none;
+    cursor: pointer;
+
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.flash-messages ul.flashes {
+    animation: shake 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-fill-mode: forwards;
+}
+
+.flashes {
+    padding-left: 0px;
+
+}
+
+.flash.Success {
+    background-color: #dff0d8;
+    color: #3c763d;
+
+}
+
+.flash.Failed {
+    background-color: #f2dede;
+    color: #a94442;
+
+
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    20%,
+    60% {
+        transform: translateY(-1px);
+    }
+
+    40%,
+    80% {
+        transform: translateY(1px);
+    }
+}
+
+.textfield {}
+
+.textfield input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: #333333;
+    background-color: white;
+    border-color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.button {
+    padding: 12px 24px;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease-in-out;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(9, 59, 94);
+}
+
+.inputcontainer,
+.form-input {
+    border-style: solid;
+    border-width: 2px;
+    outline: none
+}
+
+.button .login {}
+
+.button .signup {}
+
+video {
+    position: absolute;
+    /* padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px; */
+    padding: 0px;
+    /* padding-bottom: 2.5rem; */
+    opacity: 1;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    /* object-fit: cover; */
+    object-fit: cover;
+
+    /* width: fit-content; */
+    transition: 0.15s padding ease-out, 0.15s margin ease-out, 0.15s border ease-out;
+}
+
+img {
+    width: 5%;
+}

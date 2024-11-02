@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_login.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <title>Login</title>
+</head>
+
+<body>
+    <video autoplay=" " preload="auto" muted playsinline="" data-object-fit="cover" muted loop>
+        <source src="static/images/video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <main class="background_wrapper">
+        <div class="login_form_wrapper">
+            <!-- FORM -->
+            <form class="login__form" action="/" method="POST" novalidate>
+                <img src="static/images/GW.png"> </img>
+                <br>
+                <div class="login_form_content">
+                    <!-- LOGIN-CONTENT-BOX-1 -->
+                    <div class="login_content_box">
+                        <ion-icon name="person-outline"></ion-icon>
+
+                        <div class="login_content_box--input">
+                            <input type="Email" name="Email" placeholder=" " class="login__input email--input"></input>
+                            <label for="Email" class="login__label">Email</label>
+                        </div>
+                    </div>
+                    <!-- LOGIN-CONTENT-BOX-2 -->
+                    <div class="login_content_box">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+
+                        <div class="login_content_box--input">
+                            <input type="Password" name="Password" placeholder=" "
+                                class="login__input password--input" />
+                            <label for="Password" class="login__label">Password</label>
+                            <ion-icon class="password__hidden" id="password_hidden" name="eye-off-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <!-- LOGIN BUTTON -->
+                    <button class="button__login" type="submit" name="Login" value="Login">Login</button>
+
+                    <!-- REGISTER LOGIN -->
+                    <p class="register__login text--sm">
+                        Don't have an account ? <a href="/signup">Register</a>
+                    </p>
+                    <div class="temp">
+                        <div class="flash-messages">
+                            {% with messages = get_flashed_messages(with_categories=True) %}
+                            {% if messages %}
+                            <ul class="flashes">
+                                {% for category, message in messages %}
+                                <p class="flash {{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                <a href="/reset">(DOES NOT WORK RIGHT NOW) Reset Database</a>
+            </form>
+        </div>
+    </main>
+    <script src="/static/script.js"></script>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+    <script>
+        localStorage.clear();
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Transcript</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/transcript.css') }}">
+    </head>    
+<body>
+    <h1>Transcript</h1>
+
+    <p><strong>User ID:</strong> {{ student_info.uid }}</p>
+
+    <p><strong>First Name:</strong> {{ student_info.f_name }}</p>
+
+    <p><strong>Last Name:</strong> {{ student_info.l_name }}</p>
+
+    <p><strong>Email:</strong> {{ student_info.email }}</p>
+
+    <p><strong>Program:</strong> {{ student_info.program }}</p>
+
+    <p><strong>Major:</strong> {{ student_info.major }}</p>
+
+    <form action="/dashboard">
+
+    <br>
+
+    {% if user_info.role == 'GradSecretary' %}
+    <form action="/transcript">
+        <input type="submit" value="Return to Student Records" />
+    </form>
+
+    <br>
+
+    <form action="/transcript/{{ student_info.uid }}/update_grade">
+        <button type="submit">Update Student Grade</button>
+    </form>
+    {% endif %}
+
+    {% if user_info.role == 'Admin' %}
+    <form action="/transcript">
+        <input type="submit" value="Return to Student Records" />
+    </form>
+
+    <br>
+
+    <form action="/transcript/{{ student_info.uid }}/update_grade">
+        <button type="submit">Update Student Grade</button>
+    </form>
+    {% endif %}
+    
+    {% for semester, details in grouped_transcript.items() %}
+        <h3>{{ semester }}</h3>
+        <table border="1">
+            <tr>
+                <th>Department</th>
+                <th>Course Number</th>
+                <th>Title</th>
+                <th>Hours</th>
+                <th>Grade</th>
+            </tr>
+            {% for detail in details %}
+                <tr>
+                    <td>{{ detail[0] }}</td>
+                    <td>{{ detail[1] }}</td>
+                    <td>{{ detail[2] }}</td>
+                    <td>{{ detail[3] }}</td>
+                    <td>{{ detail[4] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+
+</body>
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</html>

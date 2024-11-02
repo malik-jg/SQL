@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Applicants</title>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/advisor_dashboard">List of Advisees <i class="fa fa-th-large"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/view_applicants">View Applicants <i class="fa fa-address-book"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            {% if applicants %}
+            <h2 class="applicantdata"> List of All Applicants </h2>
+            <table>
+                <tr>
+                    <th>Applicant ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Documents</th>
+                </tr>
+                {% for applicant in applicants %}
+                <tr>
+                    <td>
+                        <p>{{applicant['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{applicant['first_name']}} {{applicant['last_name']}}</p>
+                    </td>
+                    <td>
+                        <p>{{applicant['email']}}</p>
+                    </td>
+                    <td>
+                        <p><a class="logout" href="/adv_studentinfo?user_id={{applicant['user_id']}}"> View </a></p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% else %}
+                No Current Applicants
+            {% endif %}
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

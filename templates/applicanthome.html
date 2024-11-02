@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_home.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>Applicant Home</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        {% if decision == 'undecided'%}
+
+        {% if session['status'] == 'application incomplete'%}
+        <p class="Applicant">
+            <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
+        </p>
+        {% endif %}
+        {%if session['status'] == 'application complete and under review'%}
+        <p class="Applicant"></p>
+        {% endif %}
+        {% endif %}
+
+        {% if status == 'decision' %}
+        <p class="Applicant"> </p>
+        {% endif %}
+
+
+        <div class="inner_container_container">
+
+            <div class="inner_container">
+                <div class="left">
+                    <div class="userinfo">
+                        <h3><i class="fa fa-user" aria-hidden="true"></i></h3>
+                        <p> {{session["username"]}}</p>
+                    </div>
+                    <div class="userinfo">
+
+                        <h3><i class="fa fa-envelope" aria-hidden="true"></i></h3>
+                        <p>{{ session['email'] }}</p>
+                    </div>
+                    {% if session['studentid'] %}
+                    <div class="userinfo">
+                        <h3><i class="fa-solid fa-id-card"></i></h3>
+                        <p> {{session['studentid']}}</p>
+                    </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="inner_container">
+                <div class="right">
+
+                    <form action="{{ url_for('applicanthome') }}" method="POST">
+                        {% if session['status'] == 'application complete and under review' %}
+                        <button class="button button_moving button_moving_color" type="submit" name="Submit">Update
+                            Application
+                            <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <br>
+                        {% else %}
+                        {% endif %}
+                    </form>
+
+                    <form action="{{ url_for('applicanthome') }}" method="POST">
+
+                        {% if session['status'] == 'application complete and under review' %}
+
+                        {% elif session['status'] == 'application incomplete' %}
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Submit"
+                            value="View">Continue Application <i class="fa fa-file-text-o"></i></button>
+                        <br>
+
+                        {% else %}
+
+                        {% endif %}
+
+                        {% if session['status'] == 'application complete and under review' %}
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Status"
+                            value="Status">Status<i class="fa fa-check"></i></button>
+                        <br>
+
+                        {% elif session['status'] == 'decision' %}
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Status"
+                            value="Status">Final Decision Received <i class="fa fa-envelope-open-o"></i> </button>
+                        <br>
+
+                        {% elif session['status'] == 'application incomplete' %}
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Status"
+                            value="Status">
+                            Status<i class="fa fa-check"></i></button>
+                        <br>
+
+                        {% endif %}
+
+                        {% if session['status'] == 'application complete and under review' %}
+                        <button class="button button_moving button_moving_color" type="submit" name="Recommendation"
+                            value="Recommendation">Recommendation Letter<i class="fa fa-envelope-o"></i></button>
+                        <br>
+                        {% elif session['status'] == 'decision' %}
+
+                        {% else %}
+                        <button class="button disabled" type="submit" name="Recommendation" value="Recommendation"
+                            disabled>Recommendation Letter</button>
+                        <br>
+                        {% endif %}
+                    </form>
+
+                    <form action="/logout" method="POST">
+                        <button class="button button_moving button_moving_color" type="submit" name="Logout"
+                            value="Logout">Logout<i class="fa fa-sign-out"></i></button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <img src="static/images/GW.png"> </img>
+
+    </div>
+    <div class="vacontainer">
+        <div class="bottom">
+            <button type="button" class="collapsible">Confused? Ask George! &nbsp;<i
+                    class="fas fa-user-graduate"></i></button>
+            <div class="content">
+                <div class="relative">
+                    <div class="responseblur">
+                        <div class="response">
+                            {% for q,r in history %}
+                            <div class="message-orange">
+                                <p class="text-content">
+                                    {{q}}
+                                </p>
+                            </div>
+                            <div class="message-blue">
+                                <p class="text-content">
+                                    {{r}}
+                                </p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="question">
+                    <form action="{{ url_for('voiceassistant')}}" method="POST">
+                        <input class="questiontext" type="text" name="question"
+                            placeholder="Enter Question Here"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

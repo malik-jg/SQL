@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form One</title>
+</head>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/student_dashboard">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/register_for_classes">Register for Classes <i class="fa fa-th-large"></i></a>
+            <a class="logout" href="/form_one">Submit Form 1 <i class="fa fa-plus"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> Form 1 </h2>
+            Please check the classes you plan to take in order to graduate. Required Courses For {{program}}:
+            {% for course in required_courses %}
+                {{course['dept']}} {{course['course_num']}} ||
+            {% endfor %}
+            <br>
+            <br>
+            <table>
+                <tr>
+                    <th>Select</th>
+                    <th>Department</th>
+                    <th>Course Number</th>
+                    <th>Title</th>
+                    <th>Credits</th>
+                    <th>Pre-requisite 1</th>
+                    <th>Pre-requisite 2 </th>
+                </tr>
+                <form action = "/form_one" method = 'POST'>
+                {% for course in course_catalog %}
+                <tr>
+                    <td> <input type="checkbox" name = "select_{{course['department']}}{{course['course_num']}}"> </td>
+
+                    <td>
+                        <p>{{course['department']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['course_num']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['title']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['credit']}}</p>
+                    </td>
+                    <td>
+                        {% if course['prereq_one_num'] != 0 %}
+                            <p>{{course['prereq_one_dep']}} {{course['prereq_one_num']}}</p>
+                        {% else %}
+                            <p>None</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if course['prereq_two_num'] != 0 %}
+                            <p>{{course['prereq_two_dep']}} {{course['prereq_two_num']}}</p>
+                        {% else %}
+                            <p>None</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% if program == 'PhD' %}
+                <center><h2 class="applicantdata"> Enter Your Thesis</h2>
+                    <br>
+                    <textarea id="large-text" name="large-text" rows="10" cols="75"></textarea><br></center>
+            {% endif %}
+            <br>
+            <div class="big-button-container">
+                <center><input type="submit" class="big-button" name="Process" value="Process"></center>
+            </div>
+            <br>
+        </div>
+    </div>
+    {% if message %}
+        <script>
+            function empty_form(message){
+                alert(message)
+            }
+            empty_form("{{message}}")
+        </script>   
+    {% endif %}
+</body>
+</html>

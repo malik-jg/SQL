@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <h1>Users</h1>
+
+    <form action="/dashboard">
+        <input type="submit" value="Return to Dashboard" />
+    </form>
+
+    <br>
+
+    <form action="/view_info" method="GET">
+        <input type="test" id="search_user" name="search_user" placeholder="Search..." value="{{ request.args.get('search_user', '') }}">
+        <input type="submit" value="search"><br> 
+    </form>
+    
+    {% if users %}
+        <table border="1">
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+            
+                {% for user in users %}
+                    <tr>
+                        <td><a href="/view_info/{{user[0]}}">{{ user[0] }}</a></td>
+                        <td>{{ user[1] }} {{ user[2] }}</td>
+                        <td>{{ user[3] }}</td>
+                        <td>{{ user[4] }}</td>
+                    </tr>
+                {% endfor %}
+        </table>
+        {% else %}
+        <p>No users available</p>
+    {% endif %}
+        <br>
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

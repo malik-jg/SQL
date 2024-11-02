@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_home.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <title>Admin Home</title>
+</head>
+
+<body>
+
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/adminhome">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/adminhome">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/adduser">Add User <i class="fa fa-plus"></i></a>
+            <a class="logout" href="/adminreview">Access Reviews <i class="fa fa-envelope"></i></a>
+            <a class="logout" href="/admin_assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+
+        <div class="inner_container ">
+            {% if user_data %}
+
+            <form action=" {{ url_for('adminhome') }}" method="POST">
+                <table>
+                    <tr>
+                        <th>UserID</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    {% for user in user_data %}
+                    <tr class="row">
+                        <td class="td">
+                            <p>{{user['user_id']}}</p>
+                        </td>
+                        <td class="td">
+                            <p class="email"> {{user['email']}}</p>
+                        </td>
+                        <td class="td">
+                            <p>{{user['username']}}</p>
+                        </td>
+                        <td class="td">
+                            <p>{{user['role']}}</p>
+                        </td>
+                        <td>
+
+                            <div class="buttons_container">
+                                <a class="edit" href="/edituser/{{user['user_id']}}">Edit</a>
+                                <button class="delete" type="submit" name="Delete" value="{{user['user_id']}}">Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+                <br>
+            </form>
+
+            {% else %}
+
+            <p>No Users</p>
+
+            {% endif %}
+
+
+        </div>
+        <div class="temp">
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                    <p class="flash {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+    {% if message %}
+    <script>
+        function message(message){
+            alert(message)
+        }
+        message("{{message}}")
+    </script>   
+{% endif %}
+</body>
+
+</html>

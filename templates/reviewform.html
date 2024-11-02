@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_form.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Form</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="head">Graduate Admissions Review Form</h1>
+
+        <h2>Student Data</h2>
+
+        <div class="datafield">
+            <p>Name: <id class="formdata">{{appinfo['lastname']}}, {{appinfo['firstname']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Student Number: <id class="formdata">{{appinfo['uid']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Semester and Year of Application: <id class="formdata">{{appinfo['semester']}} {{appinfo['year']}} </id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Applying For Degree: <id class="formdata">{{appinfo['degreessought']}}</id>
+            </p>
+        </div>
+
+        <!-- maybe do a check for these? -->
+        <h2>Summary of Creditials</h2>
+        <div class="datafield">
+            <p>GRE: &nbsp &nbsp Verbal: <id class="formdata">{{appinfo['greverbal']}}</id> &nbsp &nbsp Quantitative: <id
+                    class="formdata">
+                    {{appinfo['grequantitative']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>Year of Exam: <id class="formdata">{{appinfo['greyearofexam']}}</id>
+            </p>
+        </div>
+
+        <div class="datafield">
+            <p>GRE Advanced: &nbsp &nbsp Score:<id class="formdata">{{appinfo['greadvancedscore']}}</id> &nbsp
+                &nbspSubject: <id class="formdata">{{appinfo['greadvancedsubject']}}</id>
+            </p>
+        </div>
+
+
+
+        <!-- <h2>Prior Degrees</h2> -->
+        <div class="pdtable">
+            <table>
+                <tr>
+                    <th>Degree Type</th>
+                    <th>GPA</th>
+                    <th>Year</th>
+                    <th>University</th>
+                </tr>
+                {% for degree in degree_info %}
+                <tr>
+                    <td>
+                        <p>{{degree['degree_type']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['gpa']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['year']}}</p>
+                    </td>
+                    <td>
+                        <p>{{degree['school']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="datafield">
+            <p> Areas of Interest:
+                <id class="formdata">{{appinfo['areas_interest']}}</id>
+            </p>
+
+            <p> Expierence:
+                <id class="formdata">{{appinfo['priorwork']}}</id>
+            </p>
+        </div>
+
+        <form action="{{ url_for('reviewform', user_id = appinfo['user_id'])}}" method="POST">
+
+            <h2>Recommendation Letters Rating: (Worst=1, Best =5)</h2>
+            <div class="datafield">
+                <ol>
+                    <li>
+                        <label for="rating">Rating:</label>
+                        <select name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        &nbsp
+                        <label for="generic">Generic: </label>
+                        <select name="generic">
+                            <option value="generic_n">N</option>
+                            <option value="generic_y">Y</option>
+                        </select>
+                        &nbsp
+                        <label for="Credible">Credible: </label>
+                        <select name="Credible">
+                            <option value="credible_n">N</option>
+                            <option value="credible_y">Y</option>
+                        </select>
+                        &nbsp
+                        From: &nbsp{{appinfo['rec_name']}}
+                    </li>
+                </ol>
+            </div>
+
+            <h2>Grad Admissions Comittee (GAS) Review Rating:</h2>
+            <div class="datafield">
+                <ol>
+                    <input type="radio" name="gas_decision" value="rev_reject">
+                    <label for="Reject"> Reject</label><br>
+                    <input type="radio" name="gas_decision" value="rev_borderline_admit">
+                    <label for="Reject">Borderline Admit </label><br>
+                    <input type="radio" name="gas_decision" value="rev_admit_without_aid">
+                    <label for="Reject"> Admit without Aid</label><br>
+                    <input type="radio" name="gas_decision" value="rev_admit_with_aid">
+                    <label for="Reject"> Admit with Aid</label><br>
+                </ol>
+                <p>Deficiency Courses if Any:<id class="formdatacomment"><input class="formdata" type="text"
+                            name="missing_course">
+                    </id>
+                </p>
+                <p>Reasons for Reject:<input class="formdata" type="text" name="reasons_reject" maxlength="1">
+                </p>
+                <p>(A =Incomplete Record, B= Does not meet minimum Requirements,
+                    C= Problems with Letters, D= Not competitive, E= Other reasons)</p>
+                <p>GAS Reviewer Comments:<input class="formdata" type="text" name="reviewer_comment">
+                </p>
+            </div>
+            <div class="datafield">
+                <p>Recommended Advisor:<input class="formdata" type="text" name="recommended_advisor">
+                </p>
+            </div>
+
+            {% if session['role'] == 'chair'%}
+            <div class="datafield">
+                <p>Final Decision:
+                    <input type="radio" name="final_decision" value="admit with aid">
+                    <label for="Reject"> Admit with Aid &nbsp </label>
+                    <input type="radio" name="final_decision" value="admit">
+                    <label for="Reject">Admit &nbsp</label>
+                    <input type="radio" name="final_decision" value="reject">
+                    <label for="Reject">Reject </label>
+                </p>
+            </div>
+            {% endif %}
+
+            <button class="submit" type="submit" name="Submit" value="Submit">Submit Review Form</button>
+            <a href="/roleportal">Return </a>
+        </form>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

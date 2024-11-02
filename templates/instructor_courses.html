@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instructor Courses - Instructor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+    <main>
+        <h2>My Courses</h2>
+        <ul>
+            {% for course in courses %}
+                <li>
+                    {{ course.title }} - {{ course.course_dept }}{{ course.course_num }}
+                    ({{ course.semester }} {{ course.year }})
+                    <a href="{{ url_for('enter_grades', crn=course.crn) }}">Enter Grades</a>
+                    <a href="{{ url_for('course_detail', crn=course.crn) }}">Details</a>
+                </li>
+            {% else %}
+                <li>No courses to display.</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('instructor_dashboard') }}">Back to Dashboard</a>
+    </main>
+</body>
+</html>

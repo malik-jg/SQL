@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_review_form.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter of Recomendation</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="head">Letter of Recomendation</h1>
+
+        {% if rec_info['rec_email_one'] %}
+            <h2>Recommendation</h2>
+            <div class="datafield">
+                <p>Name: <id class="formdata">{{rec_info['rec_name_one']}}</id>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Email:<id
+                        class="formdata">{{rec_info['rec_email_one']}}</id>
+                </p>
+            </div>
+            <h2>Recommendation Letter</h2>
+            <div class="datafield">
+                <p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp<id class="formdata">{{rec_info['rec_letter_one']}}</id>
+                </p>
+            </div>
+        {% endif %}
+        {% if rec_info['rec_email_two'] %}
+            <h2>Recommendation</h2>
+            <div class="datafield">
+                <p>Name: <id class="formdata">{{rec_info['rec_name_two']}}</id>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Email:<id
+                        class="formdata">{{rec_info['rec_email_two']}}</id>
+                </p>
+            </div>
+            <h2>Recommendation Letter</h2>
+            <div class="datafield">
+                <p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp<id class="formdata">{{rec_info['rec_letter_two']}}</id>
+                </p>
+            </div>
+        {% endif %}
+        {% if rec_info['rec_email_three'] %}
+            <h2>Recommendation</h2>
+            <div class="datafield">
+                <p>Name: <id class="formdata">{{rec_info['rec_name_three']}}</id>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Email:<id
+                        class="formdata">{{rec_info['rec_email_three']}}</id>
+                </p>
+            </div>
+            <h2>Recommendation Letter</h2>
+            <div class="datafield">
+                <p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp<id class="formdata">{{rec_info['rec_letter_three']}}</id>
+                </p>
+            </div>
+        {% endif %}
+        <a href="/roleportal">Return</a>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Update Grade</title>
+    <link rel="stylesheet" type="text/css" href="/static/update_grade.css"></head>
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <h1>Update Grade</h1>
+
+    <p><strong>Student ID:</strong> <span id="user_id"></span> {{student_info.uid}}</p>
+
+    <p><strong>First Name:</strong> <span id="firstName"></span> {{student_info.f_name}} </p>
+
+    <p><strong>Last Name:</strong> <span id="lastName"></span> {{student_info.l_name}} </p>
+
+    <p><strong>Email:</strong> <span id="email"></span> {{student_info.email}} </p>
+    
+    <form action="/transcript/{{student_info.uid}}/update_grade" method="post">
+    <table border="1">
+        <tr>
+            <th>Department</th>
+            <th>Course Number</th>
+            <th>Title</th>
+            <th>Hours</th>
+            <th>Grade</th>
+        </tr>
+        {% for transcript_detail in transcript_details %}
+    <tr>
+        <td>{{ transcript_detail[0] }}</td>
+        <td>{{ transcript_detail[1] }}</td>
+        <td>{{ transcript_detail[2] }}</td>
+        <td>{{ transcript_detail[3] }}</td>
+
+        <td>
+                <!-- <select id="grade" name="grades[]" {% if transcript_detail[4] == "IP" %} disabled {% endif %} required> -->
+                <select id="grade" name="grades[]" required>
+                    <option value="A" {% if transcript_detail[4] == "A" %} selected {% endif %}>A</option>
+
+                    <option value="A-" {% if transcript_detail[4] == "A-" %} selected {% endif %}>A-</option>
+
+                    <option value="B+" {% if transcript_detail[4] == "B+" %} selected {% endif %}>B+</option>
+
+                    <option value="B" {% if transcript_detail[4] == "B" %} selected {% endif %}>B</option>
+
+                    <option value="B-" {% if transcript_detail[4] == "B-" %} selected {% endif %}>B-</option>
+
+                    <option value="C+" {% if transcript_detail[4] == "C+" %} selected {% endif %}>C+</option>
+
+                    <option value="C" {% if transcript_detail[4] == "C" %} selected {% endif %}>C+</option>
+
+                    <option value="F" {% if transcript_detail[4] == "F" %} selected {% endif %}>F</option>
+
+                    <option value="IP" {% if transcript_detail[4] == "IP" %} selected {% endif %}>IP</option>
+                </select>
+        </td>
+        <input type="hidden" name="crn[]" value="{{ transcript_detail[5] }}">
+    </tr>
+    {% endfor %}
+    </table>
+    <br>
+        <button type="submit">Submit Changes</button>
+    </form>
+
+    <form action="/transcript/{{student_info.uid}}">
+        <br>
+        <button type="submit">Cancel</button>
+    </form>
+    <a href="{{ url_for('gschome') }}">Back to Dashboard</a>
+</body>
+</html>

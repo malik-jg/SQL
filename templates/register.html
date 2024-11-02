@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - College Registration System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <form id="registrationForm" action="/register" method="post">
+            <h2>Register</h2>
+            <div>
+                <label for="f_name">First Name:</label>
+                <br>
+                <input type="text" id="f_name" name="f_name" required><br>
+        
+                <label for="l_name">Last Name:</label>
+                <br>
+                <input type="text" id="l_name" name="l_name" required><br>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <br>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <br>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="dob">Date of Birth:</label>
+                <br>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <br>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div>
+                <label for="role">Role:</label>
+                <br>
+                <select id="role" name="role" required>
+                    <option value="">Select a role</option>
+                    <option value="Admin">Systems Administrator</option>
+                    <option value="GradSecretary">Grad Secretary (GS)</option>
+                    <option value="Instructor">Faculty Instructor</option>
+                    <option value="Student">Graduate Student</option>
+                </select>
+            </div>
+            <br>
+            <button type="submit">Register</button>
+            
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a>.</p>
+    </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Classes - College Registration System</title>
+    <link rel="stylesheet" type="text/css" href="/static/classes.css">
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="{{ url_for('roleportal') }}">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">Classes</h1>
+                    <form action="/logout">
+                        <input type="submit" value="Logout" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="dashboard-container">
+            <h2>User Information</h2>
+            <div class="user-info">
+                <p><strong>User ID:</strong> <span id="user_id">{{user_info.uid}}</span></p>
+                <p><strong>First Name:</strong> <span id="firstName">{{user_info.f_name}}</span></p>
+                <p><strong>Last Name:</strong> <span id="lastName">{{user_info.l_name}}</span></p>
+                <p><strong>Email:</strong> <span id="email">{{user_info.email}}</span></p>
+                <p><strong>Password:</strong> <span id="password">{{user_info.password}}</span></p>
+                <p><strong>Date of Birth:</strong> <span id="dob">{{user_info.dob}}</span></p>
+                <p><strong>Address:</strong> <span id="address">{{user_info.address}}</span></p>
+                {% if user_info.role == 'Student' %}
+                <p><strong>Program:</strong> {{ user_info.program }}</p>
+                <p><strong>Major:</strong> {{ user_info.major }}</p>
+                {% endif %}
+                <br>
+                <form action="/update_info/{{user_info.uid}}">
+                    <input type="submit" value="Change Personal Information" />
+                </form>
+                <br>
+                {% if user_info.role == 'Admin' %}
+                <a href="/transcript/{{ user_info.uid }}">View Transcript</a>
+                <button onclick="history.back()">Go Back</button>
+                {% endif %}
+                <br>
+                <form action="/instructor_dashboard">
+                    <a href="{{ url_for('instructor_dashboard') }}">Back to Dashboard</a>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

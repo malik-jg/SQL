@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graduate Secretary</title>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/gschome">Final Review <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/applications">Applications <i class="fa fa-clipboard"></i></a>
+            <a class="logout" href="/assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            {% if review_info %}
+            <h2 class="applicantdata"> Completed Review Forms </h2>
+            <table>
+                <tr>
+                    <th>Reviewer ID</th>
+                    <th>Application ID</th>
+                    <th>Name</th>
+                    <th>Review Status</th>
+                    <th>Documents</th>
+                    <th>Final Decision </th>
+                </tr>
+                {% for app in review_info %}
+                <tr>
+                    <td>
+                        <p>{{app['reviewerid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{app['applicationid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{app['lastname']}}, {{app['firstname']}}</p>
+                    </td>
+                    <td>
+                        <p>{{app['review_status']}}</p>
+                    </td>
+                    <td>
+                        <a class="logout" href="/gsc_studentinfo?user_id={{app['user_id']}}&reviewerid={{app['reviewerid']}}"> View </a>
+                    </td>
+                    <td>
+                        <a class="logout" href="/viewreviewform/{{app['applicationid']}}?reviewerid={{app['reviewerid']}}">Make Final Decision
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Inbox Empty, No Currently Finished Review Forms</p>
+            {% endif %}
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <script type="text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

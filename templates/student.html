@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_gs_home.css">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/static/images/GW.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student </title>
+    <style>
+        .long-input {
+            width: 500px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navigation">
+        <div class="logo">
+            <div class="wrapper">
+                <a class="GWhome" href="/roleportal">
+                    <img class="gwlogo" src="static/images/GW.png">
+                </a>
+                <div class="logotext">
+                    <h1 class="nounderline">{{session['role']}}</h1>
+                </div>
+            </div>
+        </div>
+        {% if session['role'] == 'grad_sec' %}
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/gschome">Final Review <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/applications">Applications <i class="fa fa-clipboard"></i></a>
+            <a class="logout" href="/assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+        {% elif session['role'] == 'admin' %}
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/adminhome">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/adduser">Add User <i class="fa fa-plus"></i></a>
+            <a class="logout" href="/adminreview">Access Reviews <i class="fa fa-envelope"></i></a>
+            <a class="logout" href="/admin_assign_advisor">Assign Advisors <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+        {%else%}
+        <div class="nav-items">
+            <a class="logout" href="/students">Students <i class="fa fa-edit"></i></a>
+            <a class="logout" href="/roleportal">Home <i class="fa fa-home"></i></a>
+            <a class="logout" href="/reghome">Schedule of Classes <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="logout" href="/profile">Profile <i class="fa fa-user-circle"></i></a>
+            <a class="logout" href="/logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+        {% endif %}
+    </nav>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="inner_container">
+            <h2 class="applicantdata"> {{student[0]['first_name']}} {{student[0]['last_name']}}</h2>
+            <br>
+            {% if student %}
+            <table>
+                <tr>
+                    <th>University ID</th>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Advisor ID</th>
+                    <th>Program</th>
+                    <th>Major</th>
+                    <th>GPA</th>
+                </tr>
+                {% for info in student %}
+                <tr>
+                    <td>
+                        <p>{{info['uid']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['user_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['last_name']}}, {{info['first_name']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['advisor_id']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['program']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['major']}}</p>
+                    </td>
+                    <td>
+                        <p>{{info['gpa']}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No Students</p>
+            {% endif %}
+            <br>
+            <h2 class="applicantdata"> Courses</h2>
+            <br>
+            {% if courses_taken %}
+            <table>
+                <tr>
+                    <th>Course</th>
+                    <th>Title</th>
+                    <th>Credits</th>
+                    <th>Date</th>
+                    <th>CRN</th>
+                    <th>Grade</th>
+                    <th>Assign Grade</th>
+                    <th>Update Grade</th>
+                </tr>
+                {% for course in courses_taken %}
+                <tr>
+                    <td>
+                        <p>{{course['dept']}} {{course['course_num']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['course_title']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['credits']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['semester_taken']}} {{course['year']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['crn']}}</p>
+                    </td>
+                    <td>
+                        <p>{{course['grade']}}</p>
+                    </td>
+                    <form id="update-grade-form" action="/student/{{ student[0]['user_id'] }}" method="POST">
+                        <td>
+                            <select name="new_grade">
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="F">F</option>
+                            </select>
+                        </td>
+                        <td>
+                            <p>
+                                <center><input type="submit" class="big-button" name="update_grade_button" value="Update Grade"></center>
+                                <input type="hidden" name="student_uid" value="{{student[0]['uid']}}" />
+                                <input type="hidden" name="course_crn" value="{{course['crn']}}" />
+                            </p>
+                        </td>
+                        </form>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No Courses</p>
+            {% endif %}
+            <br>
+            <br>
+            {% if form_one %}
+                <h2 class="applicantdata"> Most Current Form 1 </h2>
+                <br>
+                <table>
+                    <tr>
+                        <th>Department</th>
+                        <th>Course Number</th>
+                        <th>Credits</th>
+                    </tr>
+                    {% for course in forms_classes   %}
+                    <tr>
+                        <td>
+                            <p>{{course['dept']}}</p>
+                        </td>
+                        <td>
+                            <p>{{course['course_num']}}</p>
+                        </td>
+                        <td>
+                            <p>{{course['credits']}}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <center>Student Has Not Submitted A Form 1!</center>
+            {% endif %}
+            <br>
+            {% if student[0]['program'] == 'PhD' %}
+                {% if thesis %}
+                    <h2 class="applicantdata"> Thesis </h2>
+                    <br>
+                    <textarea type="text" id="thesis" rows="15" cols="75" readonly> {{thesis['thesis']}} </textarea>
+                {% else %}
+                    Not Submitted 
+                {% endif %}</p>
+            {% endif %}
+            <br>
+            <form action = "/student/{{ student[0]['user_id'] }}" method = 'POST'>
+                {% if form_one['approved'] %}
+                    <center>You Have Approved This Form 1</center>
+                {% else %}
+                    {% if form_one %}
+                    <div class="big-button-container">
+                        <center><input type="submit" class="big-button" name="approve" value="Approve"></center>
+                        <input type="hidden" name = "approve_uid" value="{{student[0]['uid']}}">
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </form>
+            <br>
+            <br>
+            <h2 class="applicantdata"> Other Info and Actions </h2>
+            <p><b>Applied to Graduate: </b>
+                {% if graduation_application %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}</p>
+            <p><b>Cleared to Graduate: </b>
+                {% if student[0]['cleared'] == 0 %}
+                    No
+                {% else %}
+                    Yes
+                {% endif %}</p>
+            <p><b>Submitted Form 1: </b>
+                {% if form_one %}
+                    Yes
+                {% else %}
+                    No  
+                {% endif %}</p>
+            <p><b>Form 1 Approved: </b>
+                {% if form_one['approved'] %}
+                    Yes
+                {% else %}
+                    No  
+                {% endif %}</p>
+            <p><b>Cleared to Register: </b>
+                {% if student[0]['advising_hold'] == 0 %}
+                    No
+                {% else %}
+                    Yes
+                {% endif %}</p>
+            {% if student[0]['program'] == 'PhD' %}
+                <p><b>Thesis: </b>
+                    {% if thesis %}
+                        Submitted
+                    {% else %}
+                        Not Submitted
+                    {% endif %}</p>
+            {% endif %}
+            <br>
+            <form action = "/student/{{ student[0]['user_id'] }}" method = 'POST'>
+                <div class="big-button-container">
+                    <center><input type="submit" class="big-button" id = "clear_graduation" name="clear_graduation" value="Clear For Graduation"></center>
+                    <input type="hidden" name = "graduation_uid" value="{{student[0]['uid']}}">
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% if message %}
+        <script>
+            function empty_form(message){
+                alert(message)
+            }
+            empty_form("{{message}}")
+        </script>   
+    {% endif %}
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

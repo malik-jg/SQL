@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style_user_home.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <title>User Home</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+
+        <p class="home">
+        </p>
+        <div class="inner_container_container">
+            <div class="inner_container">
+                <div class="left">
+                    <div class="userinfo">
+
+                        <h3><i class="fa fa-user" aria-hidden="true"></i></h3>
+                        <p> {{session["username"]}}</p>
+                    </div>
+                    <div class="userinfo">
+
+                        <h3><i class="fa fa-envelope" aria-hidden="true"></i></h3>
+                        <p>{{ session['email'] }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="inner_container">
+                <form action="{{ url_for('userhome') }}" method="POST">
+                    <div class="right">
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Apply"
+                            value="Apply">
+                            Apply <i class="fa fa-file-text-o"></i></button>
+                        <p></p>
+
+                        <button class="button button_moving button_moving_color" type="submit" name="Logout"
+                            value="Logout">
+                            Logout <i class="fa fa-sign-out"></i></button>
+                    </div>
+            </div>
+            </form>
+        </div>
+        <img src="static/images/GW.png"> </img>
+
+    </div>
+    <div class="vacontainer">
+        <div class="bottom">
+
+            <button type="button" class="collapsible">Confused? Ask George! &nbsp;<i
+                    class="fas fa-user-graduate"></i></button>
+            <div class="content">
+
+                <div class="relative">
+                    <div class="responseblur">
+                        <div class="response">
+                            {% for q,r in history %}
+                            <div class="message-orange">
+                                <p class="text-content">
+                                    {{q}}
+                                </p>
+                            </div>
+                            <div class="message-blue">
+                                <p class="text-content">
+                                    {{r}}
+                                </p>
+                            </div>
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="question">
+                    <form action="{{ url_for('voiceassistant')}}" method="POST">
+                        <input class="questiontext" type="text" name="question"
+                            placeholder="Enter Question Here"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type=" text/javascript" src="static/scriptapp.js"></script>
+</body>
+
+</html>

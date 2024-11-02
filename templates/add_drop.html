@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add/Drop Courses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <h2>Add/Drop Courses</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert {% if message.startswith('Cannot') %}cannot-drop{% elif message.startswith('Class added') or message.startswith('Class dropped') %}added{% endif %}">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ message }}
+                </div>                   
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section>
+            <h3>Change Semester</h3>
+            <form id="change_semester_form" action="/add_drop" method="post">
+                <select name="semester" onchange="this.form.submit()">
+                    {% for semester in possible_semesters %}
+                    <option value="{{ semester }}" {% if semester == selected_semester %}selected{% endif %}>{{ semester }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </section>
+        <section>
+            <h3>Add a Class</h3>
+            <form id="add_class_form" action="/add_class" method="post">
+                <select name="crn">
+                    {% for class in addable_classes %}
+                    <option value="{{ class.crn }}">{{ class.department }} {{ class.course_num }} - {{ class.title }} ({{ class.schedule_day }} {{ class.start_time }}-{{ class.end_time }})</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Add Class">
+            </form>
+        </section>
+        <section>
+            <h3>Drop a Class</h3>
+            <form action="/drop_class" method="post">
+                <select name="crn">
+                    {% for class in droppable_classes %}
+                    <option value="{{ class.crn }}">{{ class.department }} {{ class.course_num }} - {{ class.title }} ({{ class.schedule_day }} {{ class.start_time }}-{{ class.end_time }})</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Drop Class">
+            </form>
+        </section>
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </main>
+</body>
+</html>

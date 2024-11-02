@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New User - Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dash.css') }}">
+</head>
+<body>
+    <main>
+        <h2>Add New User</h2>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+        <form action="{{ url_for('add_user') }}" method="post">
+            <div>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="fname" required>
+            </div>
+            <div>
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname" required>
+            </div>
+            <div>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address">
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="role">Role:</label>
+                <select id="role" name="role" required onchange="toggleProgramDropdown()">
+                    <option value="">Please Select</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Instructor">Instructor</option>
+                    <option value="GradSecretary">Grad Secretary</option>
+                    <option value="Student">Student</option>
+                </select>
+            </div>
+            <div id="programDiv" style="display: none;">
+                <label for="program">Program:</label>
+                <select id="program" name="program" required>
+                    <option value="">Select a Program</option> 
+                    <option value="Master's">Master's</option>
+                    <option value="PhD">PhD</option>
+                </select>
+            </div>
+            <div id="majorDiv" style="display: none;">
+                <label for="major">Major:</label>
+                <input type="text" id="major" name="major" placeholder="Undeclared">
+            </div>
+            <button type="submit">Add User</button>
+        </form>
+    </main>
+    <a href="{{ url_for('adminhome') }}">Back to Dashboard</a>
+    <script>
+        function toggleProgramDropdown() {
+            var roleDropdown = document.getElementById("role");
+            var programDiv = document.getElementById("programDiv");
+            var majorDiv = document.getElementById("majorDiv");
+
+            if (roleDropdown.value === "Student") {
+                majorDiv.style.display = "block";
+                programDiv.style.display = "block";
+                document.getElementById("program").setAttribute("required", "required");
+                document.getElementById("major").setAttribute("required", "required");
+            } else {
+                majorDiv.style.display = "none";
+                programDiv.style.display = "none";
+                document.getElementById("program").removeAttribute("required");
+                document.getElementById("major").removeAttribute("required");
+            }
+        }
+    </script>
+</body>
+</html>
